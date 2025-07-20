@@ -30,14 +30,14 @@ module.exports = merge(common, {
       filename: "[name].[contenthash].css",
     }),
     new htmlPlugin({
-      template: "./index.html", // gunakan file HTML sebagai template
-      filename: "index.html", // nama file output di folder dist
+      template: "./index.html",
+      filename: "index.html",
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: "./public", to: "public" }],
     }),
     new CompressionPlugin({
-      test: /\.(js|css|jsx)(\?.*)?$/i,
+      test: /\.(js|css)(\?.*)?$/i,
       filename: "[path][base].gz",
       algorithm: "gzip",
       threshold: 8192,
@@ -49,5 +49,6 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].[contenthash].js",
     clean: true,
+    publicPath: "/",
   },
 });

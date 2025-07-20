@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const autoprefixer = require("autoprefixer");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "./src/script/main.js"),
@@ -63,9 +64,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./index.html"),
+      filename: "index.html",
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: path.resolve(__dirname, "./public"), to: "./" }],
     }),
   ],
+  resolve: {
+    extensions: [".js", ".jsx", ".ts", ".tsx"], // Pastikan TS/TSX juga ditambahkan
+  },
 };
