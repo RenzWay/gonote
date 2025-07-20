@@ -6,6 +6,7 @@ const htmlPlugin = require("html-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = merge(common, {
   mode: "production",
@@ -34,6 +35,14 @@ module.exports = merge(common, {
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: "./public", to: "public" }],
+    }),
+    new CompressionPlugin({
+      test: /\.(js|css|jsx)(\?.*)?$/i,
+      filename: "[path][base].gz",
+      algorithm: "gzip",
+      threshold: 8192,
+      minRatio: 0.8,
+      deleteOriginalAssets: false,
     }),
   ],
   output: {
