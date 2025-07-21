@@ -1,8 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const autoprefixer = require("autoprefixer");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "./src/script/main.js"),
@@ -10,47 +8,26 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "./dist"),
     clean: true,
+    publicPath: "/",
   },
   module: {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              cacheDirectory: true,
-              presets: [
-                ["@babel/preset-react", { runtime: "automatic" }],
-                ["@babel/preset-env"],
-              ],
-            },
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              ["@babel/preset-react", { runtime: "automatic" }],
+              ["@babel/preset-env"],
+            ],
           },
-          {
-            loader: "esbuild-loader",
-            options: {
-              target: "es2015",
-              loader: "jsx",
-            },
-          },
-        ],
+        },
       },
       {
         test: /\.css$/,
-        use: [
-          "style-loader",
-          "css-loader",
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                config: true,
-                // plugins: [require("tailwindcss"), require("autoprefixer")],
-              },
-            },
-          },
-        ],
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -68,10 +45,16 @@ module.exports = {
       filename: "index.html",
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, "./public"), to: "./" }],
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./public"),
+          to: "./public",
+          noErrorOnMissing: true,
+        },
+      ],
     }),
   ],
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"], // Pastikan TS/TSX juga ditambahkan
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
 };
