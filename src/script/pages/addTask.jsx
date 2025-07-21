@@ -9,6 +9,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
@@ -24,7 +25,7 @@ const categoryItem = ["Personal", "Work", "School", "Task", "Other"];
 export default function AddTaskPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(dayjs());
   const [priority, setPriority] = useState("");
   const [category, setCategory] = useState("");
 
@@ -173,6 +174,7 @@ function DateControl({ date, setDate }) {
         value={date}
         onChange={(newValue) => setDate(newValue)}
         slotProps={{ textField: { fullWidth: true } }}
+        defaultValue={date}
       />
     </LocalizationProvider>
   );

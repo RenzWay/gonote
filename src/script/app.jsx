@@ -35,8 +35,33 @@ export default function App() {
               <Route key={item.path} path={item.path} element={item.element} />
             ))}
           </Routes>
+          <Footer />
         </main>
       </section>
     </BrowserRouter>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-white border-t mt-10 py-6 px-4 sm:px-8 text-sm text-gray-600">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p className="text-center sm:text-left">
+          © {new Date().getFullYear()} <strong>GoNote</strong>. All rights
+          reserved.
+        </p>
+        <div className="flex gap-4 text-blue-500">
+          <a href="#" className="hover:underline">
+            Privacy
+          </a>
+          <a href="#" className="hover:underline">
+            Terms
+          </a>
+          <a href="mailto:support@gonote.com" className="hover:underline">
+            Contact
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 }

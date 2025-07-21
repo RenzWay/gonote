@@ -142,26 +142,29 @@ export default function HomePage() {
               {recentTasks.length === 0 ? (
                 <div className="text-center text-gray-500">No recent tasks</div>
               ) : (
-                <ul className="space-y-4">
+                <ul className="flex flex-column gap-4 ">
                   {recentTasks.map((task) => (
-                    <li
+                    <Link
+                      to={"/all"}
                       key={task.id}
-                      className="flex flex-col border-b p-3 rounded-lg transition-all shadow-md hover:bg-gray-400"
+                      className="text-dark text-decoration-none"
                     >
-                      <h5 className="font-semibold text-gray-800">
-                        {task.title}
-                      </h5>
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        {task.content}
-                      </p>
-                      <span className="text-xs text-gray-400 mt-1">
-                        {new Date(task.date).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </span>
-                    </li>
+                      <li className="flex flex-col list-unstyled border-l-2 p-3 border-l-amber-500 rounded-lg transition-all shadow-md hover:bg-gray-400">
+                        <h5 className="font-semibold text-gray-800">
+                          {task.title}
+                        </h5>
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {task.content}
+                        </p>
+                        <span className="text-xs text-gray-400 mt-1">
+                          {new Date(task.date).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </li>
+                    </Link>
                   ))}
                 </ul>
               )}
