@@ -12,6 +12,10 @@ module.exports = merge(common, {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
       },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+      },
     ],
   },
   optimization: {
@@ -20,13 +24,8 @@ module.exports = merge(common, {
       chunks: "all",
     },
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: "[name].[contenthash].css",
-      chunkFilename: "[id].[contenthash].css",
-    }),
-  ],
-  output: {
-    filename: "[name].[contenthash].js",
-  },
+  plugins: [new MiniCssExtractPlugin({})],
+  // output: {
+  //   filename: "[name].[contenthash].js",
+  // },
 });
