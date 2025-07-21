@@ -52,6 +52,7 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "@mui/x-data-grid": "^8.8.0"
+    "@mui/x-data-grid": "^8.8.0",
+    "firebase": "^12.0.0"
   }
 }

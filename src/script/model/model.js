@@ -1,28 +1,49 @@
-// Ganti URL sesuai dengan mock server atau server yang sebenarnya
-const url =
-  "https://lively-moon-764606.postman.co/workspace/gonote~105fe907-d76b-46d2-80ef-d6a42fa99616/request/41320528-13526454-8386-4727-b081-4dae007c211f?action=share&source=copy-link&creator=41320528&active-environment=4fd1492f-73ad-4359-aefa-9d2543dfe8c3";
-// atau gunakan localhost jika server berjalan lokal
-// const url = "http://localhost:3000/task";
+import { addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "./firebase";
 
-export async function GetTask() {
+export async function getGonoteTask() {
+  const snapshot = await getDocs(collection(db, "task"));
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+}
+
+export async function deleteTask(id) {
+  await deleteDoc(doc(db, "task", id));
+}
+
+export async function toggleFavorite(id, currentValue) {
+  await updateDoc(doc(db, "task", id), {
+    favorite: !currentValue,
+  });
+}
+
+export async function addGonoteTask(title, content, date, priority, category) {
   try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        // Tambahkan header lain jika diperlukan, misalnya authorization
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    console.log("Data from API:", data);
-    return data;
+    const collectionGonote = collection(db, "task");
+    const payload = {
+      title,
+      content,
+      date: date instanceof Date ? date : date?.toDate?.() || new Date(),
+      priority,
+      category,
+      favorite: false,
+      complete: false,
+    };
+    console.log("payload:", payload); // 🐞
+    const docRef = await addDoc(collectionGonote, payload);
+    console.log(`✅ berhasil menambahkan ${docRef.id}`);
+    return docRef;
   } catch (error) {
-    console.error("Error fetching tasks:", error.message);
-    throw error;
+    console.error("🔥 Firebase error:", error);
+    return null;
   }
 }

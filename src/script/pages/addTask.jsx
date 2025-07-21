@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { addGonoteTask } from "../model/model";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -27,9 +28,22 @@ export default function AddTaskPage() {
   const [priority, setPriority] = useState("");
   const [category, setCategory] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(title, content, date, priority, category);
+    const gonoteAdd = addGonoteTask(
+      title,
+      content,
+      date ? date.toDate() : null,
+      priority,
+      category
+    );
+
+    if (gonoteAdd) {
+      alert("berhasil");
+    } else {
+      alert("gagal maseh");
+    }
 
     setTitle("");
     setCategory("");

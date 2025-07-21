@@ -16,22 +16,14 @@ import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Plus } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Edit, Star, Trash2 } from "lucide-react";
 import Button from "@mui/material/Button";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import { getGonoteTask, deleteTask, toggleFavorite } from "../model/model";
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "../model/firebase";
 
 export default function AllTask() {
   const [allStatus, setAllStatus] = useState("");
@@ -103,7 +95,7 @@ export default function AllTask() {
           <TableTask />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-6">
-            <CardView data={tableData} />
+            <CardView />
           </div>
         )}
       </div>
@@ -126,74 +118,26 @@ const getPriorityStyle = (priority) => {
   }
 };
 
-const tableData = [
-  {
-    id: 1,
-    title: "Learn React Advanced Concepts",
-    category: "Programming",
-    content:
-      "Deep dive into React hooks, context API, custom hooks, performance optimization, and state management solutions like Redux and Zustand. Also cover React Testing Library and component testing strategies.",
-    date: "2024-06-01",
-    priority: "High",
-    favorite: false,
-  },
-  {
-    id: 2,
-    title: "Monthly Grocery Shopping",
-    category: "Personal",
-    content:
-      "Essential items: milk, eggs, bread, fruits, vegetables, meat, cleaning supplies, toiletries, snacks, and household items. Don't forget to check for special deals and use coupons.",
-    date: "2024-06-02",
-    priority: "Medium",
-    favorite: true,
-  },
-  {
-    id: 3,
-    title: "Project Documentation",
-    category: "Work",
-    content:
-      "Complete comprehensive documentation for the client project including system architecture, API endpoints, database schema, deployment instructions, and troubleshooting guides. Add diagrams and code examples where necessary.",
-    date: "2024-06-03",
-    priority: "Urgent",
-    favorite: false,
-  },
-  {
-    id: 4,
-    title: "Fitness Program Planning",
-    category: "Health",
-    content:
-      "Design a 12-week workout program including strength training, cardio sessions, flexibility work, and nutrition plan. Research proper form for exercises and create progress tracking spreadsheet.",
-    date: "2024-06-03",
-    priority: "Low",
-    favorite: false,
-  },
-  {
-    id: 5,
-    title: "Home Renovation Planning",
-    category: "Home",
-    content:
-      "Plan kitchen renovation project: research contractors, create budget spreadsheet, select materials (countertops, cabinets, appliances, flooring), get multiple quotes, and create timeline for work completion.",
-    date: "2024-06-03",
-    priority: "Medium",
-    favorite: false,
-  },
-];
-
 function TableTask() {
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([]);
 
-  const handleDelete = (id) => {
+  useEffect(() => {
+    getGonoteTask().then(setData);
+  }, []);
+
+  const handleDelete = async (id) => {
+    await deleteTask(id);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const handleFavorite = (id) => {
+  const handleFavorite = async (id, currentValue) => {
+    await toggleFavorite(id, currentValue);
     setData((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, favorite: !item.favorite } : item
       )
     );
   };
-
   const headTable = ["No", "Title", "Category", "Date", "Priority", "Actions"];
 
   const priorityItem = [
@@ -244,7 +188,9 @@ function TableTask() {
                     {row.category}
                   </span>
                 </TableCell>
-                <TableCell className="whitespace-nowrap">{row.date}</TableCell>
+                <TableCell className="whitespace-nowrap">
+                  {row.date?.toDate?.().toLocaleDateString?.() || "Unknown"}
+                </TableCell>
                 <TableCell className="whitespace-nowrap">
                   <span className={`badge ${getPriorityStyle(row.priority)}`}>
                     {row.priority}
@@ -253,7 +199,7 @@ function TableTask() {
                 <TableCell>
                   <div className="d-flex gap-1 sm:gap-2 flex-nowrap">
                     <button
-                      onClick={() => handleFavorite(row.id)}
+                      onClick={() => handleFavorite(row.id, row.favorite)}
                       className="btn btn-light btn-sm rounded-circle p-1"
                     >
                       <Star
@@ -283,15 +229,33 @@ function TableTask() {
 }
 
 function CardView() {
-  const [data, setData] = useState(tableData);
+  const [data, setData] = useState([]);
 
-  const handleFavorite = (id) => {
+  useEffect(() => {
+    getGonoteTask().then(setData);
+  }, []);
+
+  const handleDelete = async (id) => {
+    await deleteTask(id);
+    setData((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleFavorite = async (id, currentValue) => {
+    await toggleFavorite(id, currentValue);
     setData((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, favorite: !item.favorite } : item
       )
     );
   };
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "task"), (snapshot) => {
+      setData(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+    });
+    return () => unsub();
+  }, []);
+
   return (
     <>
       {data.map((item) => (
@@ -315,7 +279,9 @@ function CardView() {
               {item.content}
             </Typography>
             <div className="flex justify-between text-sm text-gray-500 pt-2">
-              <span>{item.date}</span>
+              <span>
+                {item.date?.toDate?.().toLocaleDateString?.() || "Unknown"}
+              </span>
               <span
                 className={`font-semibold badge ${getPriorityStyle(
                   item.priority
@@ -341,6 +307,7 @@ function CardView() {
                 color="error"
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors text-red-500"
                 aria-label="delete"
+                onClick={() => handleDelete(item.id)}
               >
                 <Trash2 size={18} />
               </Button>

@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Badge from "@mui/material/Badge";
-import { ChartLine } from "lucide-react";
-import { Clock } from "lucide-react";
-import { CheckCircle } from "lucide-react";
-import { FileIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import { PlusSquare, ChartColumn, SquareMenu, ArrowRight } from "lucide-react";
+import {
+  PlusSquare,
+  ChartLine,
+  SquareMenu,
+  ArrowRight,
+  Clock,
+  CheckCircle,
+  StarIcon,
+} from "lucide-react";
+
+import { getGonoteTask } from "../model/model";
 
 const quickAction = [
   {
@@ -24,36 +30,64 @@ const quickAction = [
 
 const boxActivities = [
   {
+    key: "total",
     title: "Total Task",
-    length: 0,
-    logo: <ChartLine size={45} color="#009dff" />,
-    date: "prom last year",
+    filter: (tasks) => tasks.length,
+    percent: (tasks) => 100, // total = 100%
+    icon: <ChartLine size={45} color="#009dff" />,
     bgColor: "bg-blue-100",
   },
-  { 
+  {
+    key: "active",
     title: "Active Task",
-    length: 0,
-    logo: <Clock size={45} color="#f97316" />,
-    date: "prom last year",
+    filter: (tasks) => tasks.filter((t) => !t.complete).length,
+    percent: (tasks) =>
+      tasks.length === 0
+        ? 0
+        : Math.round(
+            (tasks.filter((t) => !t.complete).length / tasks.length) * 100
+          ),
+    icon: <Clock size={45} color="#f97316" />,
     bgColor: "bg-orange-100",
   },
   {
+    key: "complete",
     title: "Complete Task",
-    length: 0,
-    logo: <CheckCircle size={45} color="#84cc16" />,
-    date: "prom last year",
+    filter: (tasks) => tasks.filter((t) => t.complete).length,
+    percent: (tasks) =>
+      tasks.length === 0
+        ? 0
+        : Math.round(
+            (tasks.filter((t) => t.complete).length / tasks.length) * 100
+          ),
+    icon: <CheckCircle size={45} color="#84cc16" />,
     bgColor: "bg-lime-100",
   },
   {
-    title: "Another Task",
-    length: 0,
-    logo: <FileIcon size={45} color="#9333ea" />,
-    date: "prom last year",
-    bgColor: "bg-purple-100",
+    key: "favorite",
+    title: "Favorite Task",
+    filter: (tasks) => tasks.filter((t) => t.favorite).length,
+    percent: (tasks) =>
+      tasks.length === 0
+        ? 0
+        : Math.round(
+            (tasks.filter((t) => t.favorite).length / tasks.length) * 100
+          ),
+    icon: <StarIcon size={45} color="#facc15" />,
+    bgColor: "bg-yellow-100",
   },
 ];
 
 export default function HomePage() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getGonoteTask().then(setData);
+  }, []);
+
+  const recentTasks = [...data]
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 3);
+
   return (
     <>
       <header className="px-20 py-6 bg-gradient-to-r from-blue-50 to-purple-50">
@@ -67,22 +101,30 @@ export default function HomePage() {
           {boxActivities.map((item) => (
             <div
               className="p-6 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow duration-200"
-              key={item.title}
+              key={item.key}
             >
               <header className="flex justify-between items-start mb-4">
                 <div>
                   <p className="text-gray-500 text-sm mb-1">{item.title}</p>
                   <h5 className="text-2xl font-bold text-gray-800">
-                    {item.length}
+                    {item.filter(data)}
                   </h5>
                 </div>
                 <div className={`p-3 rounded-lg ${item.bgColor}`}>
-                  {item.logo}
+                  {item.icon}
                 </div>
               </header>
 
-              <div className="pt-2 border-t border-gray-100">
-                <h6 className="text-sm text-gray-500">{item.date}</h6>
+              <div className="mt-3">
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-indigo-400 to-purple-500 transition-all duration-300"
+                    style={{ width: `${item.percent(data)}%` }}
+                  />
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  {item.percent(data)}%
+                </p>
               </div>
             </div>
           ))}
@@ -95,8 +137,34 @@ export default function HomePage() {
                 Recent Task
               </h3>
             </header>
+
             <div className="px-6 py-8" id="taskList">
-              <div className="text-center text-gray-500">No recent tasks</div>
+              {recentTasks.length === 0 ? (
+                <div className="text-center text-gray-500">No recent tasks</div>
+              ) : (
+                <ul className="space-y-4">
+                  {recentTasks.map((task) => (
+                    <li
+                      key={task.id}
+                      className="flex flex-col border-b p-3 rounded-lg transition-all shadow-md hover:bg-gray-400"
+                    >
+                      <h5 className="font-semibold text-gray-800">
+                        {task.title}
+                      </h5>
+                      <p className="text-sm text-gray-600 line-clamp-2">
+                        {task.content}
+                      </p>
+                      <span className="text-xs text-gray-400 mt-1">
+                        {new Date(task.date).toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
             <div className="flex justify-center py-4 border-t border-gray-100">
