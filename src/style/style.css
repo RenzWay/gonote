@@ -1,7 +1,2 @@
-@layer theme, base, components, utilities; /* definisi layer */
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss";
 @import "bootstrap";
-/* @import "bootstrap/dist/css/bootstrap.css"; masuk di luar layer Tailwind */
-@import "tailwindcss/utilities.css" layer(utilities);
-/* @plugin "daisyui"; */

@@ -1,11 +1,11 @@
-# <img src="./public/webpack.svg" width="5%" alt="logo"  /> Webpack Starter
+# <img src="./public/react.png" width="5%" alt="logo"  /> GoNote
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Webpack](https://img.shields.io/badge/webpack-5.x-brightgreen)
 ![Status](https://img.shields.io/badge/status-ready_to_use-green)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-A modern, ready-to-use Webpack starter template for kickstarting **JavaScript**, **HTML**, and **CSS** projects. Designed to be lightweight, fast, and easy to customize.
+Todolist app next design **JavaScript**, **HTML**, **React**, **SCSS**, and **CSS** projects. Designed for easily note task and for school.
 
 ---
 

@@ -1,11 +1,8 @@
-const path = require("path");
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const htmlPlugin = require("html-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = merge(common, {
@@ -14,7 +11,19 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                config: true,
+                // plugins: [require("tailwindcss"), require("autoprefixer")],
+              },
+            },
+          },
+        ],
       },
     ],
   },
@@ -28,25 +37,15 @@ module.exports = merge(common, {
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash].css",
-    }),
-    new htmlPlugin({
-      template: "./index.html",
-      filename: "index.html",
-    }),
-    new CopyWebpackPlugin({
-      patterns: [{ from: "./public", to: "public" }],
+      chunkFilename: "[id].[contenthash].css",
     }),
     new CompressionPlugin({
       test: /\.(js|css)(\?.*)?$/i,
-      filename: "[path][base].gz",
-      algorithm: "gzip",
       threshold: 8192,
       minRatio: 0.8,
-      deleteOriginalAssets: false,
     }),
   ],
   output: {
-    path: path.resolve(__dirname, "dist"),
     filename: "[name].[contenthash].js",
     clean: true,
     publicPath: "/",
