@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e40af",
-  "description": "A simple and elegant task manager built with React",
+  "description": "GoNote makes task management simple and stress-free. Organize your day with ease and never miss a thing!",
   "orientation": "portrait",
   "icons": [
     {
@@ -17,6 +17,26 @@
       "src": "./notes.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./ss/dashboard.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/addpage.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/allpage.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
