@@ -22,13 +22,67 @@
   "screenshots": [
     {
       "src": "./ss/dashboard.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/dashboard.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/dashboard.png",
+      "sizes": "828x1792",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/dashboard.png",
       "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
       "src": "./ss/addpage.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/addpage.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/addpage.png",
+      "sizes": "828x1792",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/addpage.png",
       "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/allpage.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/allpage.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/allpage.png",
+      "sizes": "828x1792",
       "type": "image/png",
       "form_factor": "wide"
     },
