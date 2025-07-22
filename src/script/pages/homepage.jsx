@@ -9,6 +9,7 @@ import {
   Clock,
   CheckCircle,
   StarIcon,
+  FileX,
 } from "lucide-react";
 
 import { getGonoteTask } from "../model/model";
@@ -134,13 +135,48 @@ export default function HomePage() {
           <div className="bg-white rounded-xl shadow-sm">
             <header className="px-6 py-4 border-b border-gray-100">
               <h3 className="text-lg font-semibold text-gray-800">
+                Quick Action
+              </h3>
+            </header>
+            <div className="grid gap-3 my-auto p-4">
+              {quickAction.map((item) => (
+                <Link
+                  key={item.title}
+                  className={`${item.bg} flex items-center gap-3 px-4 py-3 rounded-lg text-white text-decoration-none
+                    shadow-sm hover:shadow-md transition-all duration-200 hover:opacity-90`}
+                  to={item.to}
+                >
+                  <div className="p-2 bg-white/20 rounded-lg">{item.icon}</div>
+                  <span className="font-medium">{item.title}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm">
+            <header className="px-6 py-4 border-b border-gray-100">
+              <h3 className=" text-gray-400 text-lg font-semibold">
                 Recent Task
               </h3>
             </header>
 
             <div className="px-6 py-8" id="taskList">
               {recentTasks.length === 0 ? (
-                <div className="text-center text-gray-500">No recent tasks</div>
+                <div className="flex flex-col items-center justify-center py-16 text-center text-gray-500">
+                  <div className="bg-gray-100 p-6 rounded-full shadow-inner mb-4">
+                    <FileX className="w-12 h-12 text-gray-400" />
+                  </div>
+                  <p className="text-xl font-semibold">Tidak ada data</p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Silakan tambah data terlebih dahulu
+                  </p>
+                  <a
+                    href="/add"
+                    className="mt-6 inline-block px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition no-underline"
+                  >
+                    Tambah Data
+                  </a>
+                </div>
               ) : (
                 <ul className="flex flex-column gap-4 ">
                   {recentTasks.map((task) => (
@@ -149,7 +185,7 @@ export default function HomePage() {
                       key={task.id}
                       className="text-dark text-decoration-none"
                     >
-                      <li className="flex flex-col list-unstyled border-l-2 p-3 border-l-amber-500 rounded-lg transition-all shadow-md hover:bg-gray-400">
+                      <li className="flex flex-col list-unstyled border-l-4 p-3 border-l-amber-500 rounded-lg transition-all shadow-md hover:bg-gray-400">
                         <h5 className="font-semibold text-gray-800">
                           {task.title}
                         </h5>
@@ -179,27 +215,6 @@ export default function HomePage() {
                 <span className="font-medium">View All Tasks</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm">
-            <header className="px-6 py-4 border-b border-gray-100">
-              <h3 className="text-lg font-semibold text-gray-800">
-                Quick Action
-              </h3>
-            </header>
-            <div className="grid gap-3 my-auto p-4">
-              {quickAction.map((item) => (
-                <Link
-                  key={item.title}
-                  className={`${item.bg} flex items-center gap-3 px-4 py-3 rounded-lg text-white text-decoration-none
-                    shadow-sm hover:shadow-md transition-all duration-200 hover:opacity-90`}
-                  to={item.to}
-                >
-                  <div className="p-2 bg-white/20 rounded-lg">{item.icon}</div>
-                  <span className="font-medium">{item.title}</span>
-                </Link>
-              ))}
             </div>
           </div>
         </section>

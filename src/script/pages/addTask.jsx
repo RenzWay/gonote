@@ -7,11 +7,15 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
+import Swal from "sweetalert2";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useNavigate } from "react-router-dom";
 
 const priorityItem = [
   { name: "Low" },
@@ -23,27 +27,46 @@ const priorityItem = [
 const categoryItem = ["Personal", "Work", "School", "Task", "Other"];
 
 export default function AddTaskPage() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [date, setDate] = useState(dayjs());
   const [priority, setPriority] = useState("");
   const [category, setCategory] = useState("");
+  const [favorite, setFavorite] = useState(false);
+  const [complete, setComplete] = useState(false);
+
+  const handleNavigate = () => {
+    Swal.fire({
+      title: "Sukses!",
+      text: "Task berhasil ditambahkan!",
+      icon: "success",
+      confirmButtonText: "Lihat Task",
+    }).then((result) => {
+      navigate("/all");
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(title, content, date, priority, category);
-    const gonoteAdd = addGonoteTask(
+    const gonoteAdd = await addGonoteTask(
       title,
       content,
       date ? date.toDate() : null,
       priority,
-      category
+      category,
+      favorite,
+      complete
     );
 
     if (gonoteAdd) {
-      alert("berhasil");
+      handleNavigate();
     } else {
-      alert("gagal maseh");
+      Swal.fire({
+        icon: "error",
+        text: "tidak berhasil ada kegagalan",
+      });
     }
 
     setTitle("");
@@ -51,10 +74,12 @@ export default function AddTaskPage() {
     setContent("");
     setDate(null);
     setPriority("");
+    setFavorite(false);
+    setComplete(false);
   };
   return (
     <section className=" bg-gray-50/30 " role="body">
-      <header className="text-center py-5">
+      <header className="text-center py-5 bg-gradient-to-r from-blue-50 to-purple-50 mb-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Add New Task</h1>
         <p className="text-gray-600">
           Create a new task to stay organized and productive
@@ -101,6 +126,30 @@ export default function AddTaskPage() {
               category={category}
             />
           </div>
+
+          <Box className="flex justify-between items-center px-2">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={favorite}
+                  onChange={(e) => setFavorite(e.target.checked)}
+                  color="warning"
+                />
+              }
+              label="Favorite"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={complete}
+                  onChange={(e) => setComplete(e.target.checked)}
+                  color="success"
+                />
+              }
+              label="Complete"
+            />
+          </Box>
+
           <hr />
           <Button
             type="submit"

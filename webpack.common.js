@@ -1,17 +1,17 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const webpack = require("webpack");
-const dotenv = require("dotenv");
-dotenv.config();
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   entry: path.resolve(__dirname, "./src/script/main.js"),
+
   output: {
     filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     clean: true,
   },
+
   module: {
     rules: [
       {
@@ -22,7 +22,7 @@ module.exports = {
           options: {
             presets: [
               ["@babel/preset-react", { runtime: "automatic" }],
-              ["@babel/preset-env"],
+              "@babel/preset-env",
             ],
           },
         },
@@ -32,20 +32,22 @@ module.exports = {
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-      {
         test: /\.s[ac]ss$/i,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: "asset/resource",
+      },
     ],
   },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./index.html"),
       filename: "index.html",
     }),
+
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -55,27 +57,11 @@ module.exports = {
         },
       ],
     }),
-    new webpack.DefinePlugin({
-      "process.env.FIREBASE_API_KEY": JSON.stringify(
-        process.env.FIREBASE_API_KEY
-      ),
-      "process.env.FIREBASE_AUTH_DOMAIN": JSON.stringify(
-        process.env.FIREBASE_AUTH_DOMAIN
-      ),
-      "process.env.FIREBASE_PROJECT_ID": JSON.stringify(
-        process.env.FIREBASE_PROJECT_ID
-      ),
-      "process.env.FIREBASE_STORAGE_BUCKET": JSON.stringify(
-        process.env.FIREBASE_STORAGE_BUCKET
-      ),
-      "process.env.FIREBASE_MESSAGING_SENDER_ID": JSON.stringify(
-        process.env.FIREBASE_MESSAGING_SENDER_ID
-      ),
-      "process.env.FIREBASE_APP_ID": JSON.stringify(
-        process.env.FIREBASE_APP_ID
-      ),
-    }),
+
+    // ✅ Inject all .env variables into process.env
+    new Dotenv(),
   ],
+
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
   },

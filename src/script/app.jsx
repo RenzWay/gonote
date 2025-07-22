@@ -4,6 +4,7 @@ import AddTaskPage from "./pages/addTask.jsx";
 import HomePage from "./pages/homepage.jsx";
 import Sidebar from "./lib/navbar.jsx";
 import AllTask from "./pages/allTask.jsx";
+import EditTaskPage from "./pages/EditTask.jsx";
 
 const rute = [
   {
@@ -17,6 +18,10 @@ const rute = [
   {
     path: "/all",
     element: <AllTask />,
+  },
+  {
+    path: "/edit/:id",
+    element: <EditTaskPage />,
   },
 ];
 

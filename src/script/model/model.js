@@ -1,10 +1,11 @@
-import { addDoc } from "firebase/firestore";
 import {
+  addDoc,
   collection,
   getDocs,
   deleteDoc,
   doc,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -26,7 +27,15 @@ export async function toggleFavorite(id, currentValue) {
   });
 }
 
-export async function addGonoteTask(title, content, date, priority, category) {
+export async function addGonoteTask(
+  title,
+  content,
+  date,
+  priority,
+  category,
+  favorite = false,
+  complete = false
+) {
   try {
     const collectionGonote = collection(db, "task");
     const payload = {
@@ -35,10 +44,9 @@ export async function addGonoteTask(title, content, date, priority, category) {
       date: date instanceof Date ? date : date?.toDate?.() || new Date(),
       priority,
       category,
-      favorite: false,
-      complete: false,
+      favorite,
+      complete,
     };
-    console.log("payload:", payload); // 🐞
     const docRef = await addDoc(collectionGonote, payload);
     console.log(`✅ berhasil menambahkan ${docRef.id}`);
     return docRef;
@@ -47,3 +55,25 @@ export async function addGonoteTask(title, content, date, priority, category) {
     return null;
   }
 }
+
+export const toggleComplete = async (id, currentValue) => {
+  const ref = doc(db, "task", id);
+  await updateDoc(ref, {
+    complete: !currentValue,
+  });
+};
+
+export async function editGonoteTask(id, updatedData) {
+  const ref = doc(db, "task", id);
+  await updateDoc(ref, updatedData);
+}
+export const getTaskById = async (id) => {
+  const ref = doc(db, "task", id);
+  const snapshot = await getDoc(ref);
+  return { id: snapshot.id, ...snapshot.data() };
+};
+
+export const updateTask = async (id, updatedData) => {
+  const ref = doc(db, "task", id);
+  await updateDoc(ref, updatedData);
+};
