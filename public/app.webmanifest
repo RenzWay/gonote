@@ -21,76 +21,52 @@
   ],
   "screenshots": [
     {
-      "src": "./ss/dashboard.png",
-      "sizes": "640x1136",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/dashboard.png",
+      "src": "./ss/dashboard-mb.jpg",
       "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "wide"
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "./ss/add-mb.jpg",
+      "sizes": "750x1334",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "./ss/all-mb.jpg",
+      "sizes": "828x1792",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     },
     {
       "src": "./ss/dashboard.png",
-      "sizes": "828x1792",
+      "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
-      "src": "./ss/dashboard.png",
+      "src": "./ss/addpage.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/allpage.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "./ss/loading.jpg",
       "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "wide"
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     },
     {
-      "src": "./ss/addpage.png",
-      "sizes": "640x1136",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/addpage.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/addpage.png",
-      "sizes": "828x1792",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/addpage.png",
+      "src": "./ss/panjang.jpg",
       "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/allpage.png",
-      "sizes": "640x1136",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/allpage.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/allpage.png",
-      "sizes": "828x1792",
-      "type": "image/png",
-      "form_factor": "wide"
-    },
-    {
-      "src": "./ss/allpage.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "wide"
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     }
   ]
 }

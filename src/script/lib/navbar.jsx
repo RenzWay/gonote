@@ -37,7 +37,7 @@ export default function Sidebar({ open, setOpen }) {
       >
         <div className="flex justify-between items-center px-4 py-3 border-b">
           <img src="/public/notes.png" width={35} alt="icon image" />
-          <h1 className="text-xl font-bold">GoNote</h1>
+          <h1 className="text-xl font-bolder">GoNote</h1>
           <button
             onClick={() => setOpen(false)}
             className="hover:bg-gray-100 p-1 rounded"

@@ -80,7 +80,10 @@ export default function AddTaskPage() {
   return (
     <section className=" bg-gray-50/30 " role="body">
       <header className="text-center py-5 bg-gradient-to-r from-blue-50 to-purple-50 mb-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Add New Task</h1>
+        <h1 className="text-2xl flex gap-1 justify-content-center font-bold text-gray-800 mb-2">
+          <img src="/public/add.png" width={50} alt="icon all task" />
+          Add New Task
+        </h1>
         <p className="text-gray-600">
           Create a new task to stay organized and productive
         </p>
@@ -220,6 +223,7 @@ function DateControl({ date, setDate }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
+        format="YYYY-MM-DD"
         value={date}
         onChange={(newValue) => setDate(newValue)}
         slotProps={{ textField: { fullWidth: true } }}

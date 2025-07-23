@@ -11,10 +11,14 @@ import { db } from "./firebase";
 
 export async function getGonoteTask() {
   const snapshot = await getDocs(collection(db, "task"));
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      date: data.date?.toDate?.() ?? new Date(),
+    };
+  });
 }
 
 export async function deleteTask(id) {

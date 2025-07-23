@@ -41,6 +41,10 @@ export default function EditTaskPage() {
         setCategory(task.category);
         setFavorite(task.favorite || false);
         setComplete(task.complete || false);
+      } else {
+        console.warn("Task tidak ditemukan dengan ID:", id);
+        navigate("/all"); // Atau tampilkan pesan error
+        return;
       }
     };
     fetchData();
@@ -106,6 +110,7 @@ export default function EditTaskPage() {
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                format="YYYY-MM-DD"
                 value={date}
                 onChange={(newValue) => setDate(newValue)}
                 slotProps={{ textField: { fullWidth: true } }}

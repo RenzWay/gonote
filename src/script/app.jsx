@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <section role="none" className="flex h-screen">
+      <section role="body" className="flex h-screen">
         <header>
           <Sidebar open={open} setOpen={setOpen} />
         </header>

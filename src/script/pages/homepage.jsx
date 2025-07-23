@@ -11,6 +11,7 @@ import {
   StarIcon,
   FileX,
 } from "lucide-react";
+import Loading from "../lib/loading";
 
 import { getGonoteTask } from "../model/model";
 
@@ -81,18 +82,40 @@ const boxActivities = [
 
 export default function HomePage() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getGonoteTask().then(setData);
+    const fetchData = async () => {
+      try {
+        const tasks = await getGonoteTask();
+        setData(tasks);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setTimeout(() => setLoading(false), 300);
+      }
+    };
+    fetchData();
+    // getGonoteTask().then((data) => {
+    //   console.log(data); // lihat format `date`
+    //   setData(data);
+    // });
   }, []);
 
   const recentTasks = [...data]
+    .map((t) => ({
+      ...t,
+      date: t.date?.toDate?.() ?? new Date(t.date),
+    }))
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 3);
 
   return (
     <>
       <header className="px-20 py-6 bg-gradient-to-r from-blue-50 to-purple-50">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Dashboard</h1>
+        <h1 className="text-2xl flex gap-1 font-bold text-gray-800 mb-2">
+          <img src="/public/dashboard.png" width={50} alt="icon all task" />
+          Dashboard
+        </h1>
         <p className="text-gray-600">
           Track your activity and manage your task efficiently
         </p>
@@ -133,7 +156,7 @@ export default function HomePage() {
 
         <section className="mt-8 gap-6 grid grid-cols-1 sm:grid-cols-2">
           <div className="bg-white rounded-xl shadow-sm">
-            <header className="px-6 py-4 border-b border-gray-100">
+            <header className="px-6 py-4 border-b border-gray-400">
               <h3 className="text-lg font-semibold text-gray-800">
                 Quick Action
               </h3>
@@ -154,14 +177,16 @@ export default function HomePage() {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm">
-            <header className="px-6 py-4 border-b border-gray-100">
+            <header className="px-6 py-4 border-b border-gray-400">
               <h3 className=" text-gray-400 text-lg font-semibold">
                 Recent Task
               </h3>
             </header>
 
             <div className="px-6 py-8" id="taskList">
-              {recentTasks.length === 0 ? (
+              {loading ? (
+                <Loading bolean={true} />
+              ) : recentTasks.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center text-gray-500">
                   <div className="bg-gray-100 p-6 rounded-full shadow-inner mb-4">
                     <FileX className="w-12 h-12 text-gray-400" />
@@ -185,17 +210,15 @@ export default function HomePage() {
                       key={task.id}
                       className="text-dark text-decoration-none"
                     >
-                      <li className="flex flex-col list-unstyled border-l-4 p-3 border-l-amber-500 rounded-lg transition-all shadow-md hover:bg-gray-400">
-                        <h5 className="font-semibold text-gray-800">
+                      <li className="flex flex-col gap-2 list-none border-l-4 border-blue-500 bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+                        <h5 className="font-semibold text-blue-800 text-base">
                           {task.title}
                         </h5>
-                        <p className="text-sm text-gray-600 line-clamp-2">
-                          {task.content}
-                        </p>
-                        <span className="text-xs text-gray-400 mt-1">
-                          {new Date(task.date).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
+                        <p className="text-sm text-gray-700">{task.content}</p>
+                        <span className="text-xs text-gray-500 mt-auto italic">
+                          {new Date(task.date).toLocaleDateString("id-ID", {
+                            day: "numeric",
+                            month: "long",
                             year: "numeric",
                           })}
                         </span>
@@ -206,7 +229,7 @@ export default function HomePage() {
               )}
             </div>
 
-            <div className="flex justify-center py-4 border-t border-gray-100">
+            <div className="flex justify-center py-4 border-t border-gray-400">
               <Link
                 className="flex items-center gap-2 text-decoration-none hover:opacity-80 transition-opacity"
                 to="/all"
