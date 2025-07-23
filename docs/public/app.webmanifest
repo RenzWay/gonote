@@ -34,7 +34,7 @@
     },
     {
       "src": "./ss/all-mb.jpg",
-      "sizes": "828x1792",
+      "sizes": "750x1334",
       "type": "image/jpeg",
       "form_factor": "narrow"
     },
@@ -58,13 +58,13 @@
     },
     {
       "src": "./ss/loading.jpg",
-      "sizes": "1080x1920",
+      "sizes": "750x1334",
       "type": "image/jpeg",
       "form_factor": "narrow"
     },
     {
       "src": "./ss/panjang.jpg",
-      "sizes": "1080x1920",
+      "sizes": "750x1334",
       "type": "image/jpeg",
       "form_factor": "narrow"
     }
