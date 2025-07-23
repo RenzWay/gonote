@@ -134,7 +134,7 @@ export default function AllTask() {
             setData={(e) => setAllStatus(e.target.value)}
           />
           <ControlSearch
-            title="Urutkan"
+            title="Sort By"
             ArrayData={[
               "None",
               "Sort by date",
