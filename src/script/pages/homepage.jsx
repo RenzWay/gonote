@@ -155,30 +155,34 @@ export default function HomePage() {
         </section>
 
         <section className="mt-8 gap-6 grid grid-cols-1 sm:grid-cols-2">
-          <div className="bg-white rounded-xl shadow-sm">
-            <header className="px-6 py-4 border-b border-gray-400">
-              <h3 className="text-lg font-semibold text-gray-800">
-                Quick Action
+          <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+            <header className="px-6 py-4 bg-gradient-to-r from-indigo-100 to-purple-100 border-b border-gray-300">
+              <h3 className="text-lg font-bold text-gray-800">
+                🚀 Quick Action
               </h3>
             </header>
-            <div className="grid gap-3 my-auto p-4">
+            <div className="grid gap-3 p-4">
               {quickAction.map((item) => (
                 <Link
                   key={item.title}
-                  className={`${item.bg} flex items-center gap-3 px-4 py-3 rounded-lg text-white text-decoration-none
-                    shadow-sm hover:shadow-md transition-all duration-200 hover:opacity-90`}
+                  className={`group ${item.bg} flex items-center gap-4 px-4 py-3 rounded-xl text-white shadow-md transition-all duration-300 transform hover:scale-[1.02] hover:brightness-110 hover:shadow-xl`}
                   to={item.to}
                 >
-                  <div className="p-2 bg-white/20 rounded-lg">{item.icon}</div>
-                  <span className="font-medium">{item.title}</span>
+                  <div className="p-3 bg-white/30 rounded-full shadow-sm group-hover:bg-white/40 transition">
+                    {item.icon}
+                  </div>
+                  <span className="font-semibold tracking-wide text-md">
+                    {item.title}
+                  </span>
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm">
-            <header className="px-6 py-4 border-b border-gray-400">
-              <h3 className=" text-gray-400 text-lg font-semibold">
+          <div className="bg-white rounded-2xl shadow-sm">
+            <header className="px-6 py-4 rounded-t-2xl border-b border-gray-400 bg-gradient-to-r from-indigo-100 to-purple-100">
+              <h3 className="flex gap-1 text-gray-400 text-lg font-semibold">
+                <Clock size={45} color="#f97316" />
                 Recent Task
               </h3>
             </header>
@@ -191,15 +195,15 @@ export default function HomePage() {
                   <div className="bg-gray-100 p-6 rounded-full shadow-inner mb-4">
                     <FileX className="w-12 h-12 text-gray-400" />
                   </div>
-                  <p className="text-xl font-semibold">Tidak ada data</p>
+                  <p className="text-xl font-semibold">There are no task</p>
                   <p className="text-sm text-gray-400 mt-1">
-                    Silakan tambah data terlebih dahulu
+                    Please add task first
                   </p>
                   <a
                     href="/add"
                     className="mt-6 inline-block px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition no-underline"
                   >
-                    Tambah Data
+                    Add Task
                   </a>
                 </div>
               ) : (

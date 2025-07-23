@@ -105,7 +105,7 @@ export default function AllTask() {
         <div>
           <h1 className="flex gap-1 text-3xl font-bold text-slate-800">
             <img src="/public/check-list.png" width={50} alt="icon all task" />
-            All Tugas
+            All Task
           </h1>
           <p className="text-sm text-slate-500">
             Manage and organize all your tasks here
@@ -113,16 +113,16 @@ export default function AllTask() {
         </div>
         <Link
           to="/add"
-          className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition-all flex gap-2 items-center mt-4 sm:mt-0"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition-all flex gap-2 items-center mt-4 sm:mt-0 text-decoration-none"
         >
-          <Plus size={20} /> Tambah Tugas
+          <Plus size={20} /> Add Task
         </Link>
       </header>
 
       <div className="bg-white rounded-xl p-4 shadow-md mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <TextField
-            label="🔍 Cari Tugas"
+            label="🔍 Search Task"
             fullWidth
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -152,13 +152,13 @@ export default function AllTask() {
       ) : dataTasks.length === 0 ? (
         <div className="text-center py-20 text-gray-400">
           <FileX className="mx-auto mb-4 w-12 h-12" />
-          <p className="text-lg font-semibold">Belum ada tugas</p>
-          <p className="text-sm">Silakan tambahkan tugas terlebih dahulu</p>
+          <p className="text-lg font-semibold">There are no task yet</p>
+          <p className="text-sm">Please add the task first</p>
           <Link
             to="/add"
             className="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-500"
           >
-            Tambah Tugas
+            Add Task
           </Link>
         </div>
       ) : (
@@ -203,7 +203,7 @@ function CardView({ data, setData }) {
               {item.title}
             </Typography>
             <Typography className="text-sm text-slate-500">
-              Kategori:
+              Category:
               <span className="ml-2 inline-block bg-indigo-500 text-white px-2 py-1 rounded-full text-xs">
                 {item.category}
               </span>
@@ -214,7 +214,7 @@ function CardView({ data, setData }) {
                     : "bg-yellow-100 text-yellow-700"
                 }`}
               >
-                {item.complete ? "Selesai" : "Aktif"}
+                {item.complete ? "Complete" : "Active"}
               </span>
             </Typography>
             <Typography className="text-sm text-slate-600">
