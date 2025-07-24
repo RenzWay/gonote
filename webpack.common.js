@@ -1,14 +1,14 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const Dotenv = require("dotenv-webpack");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  entry: path.resolve(__dirname, "./src/script/main.js"),
+  entry: path.resolve(__dirname, './src/script/main.js'),
 
   output: {
-    filename: "bundle.main.js",
-    path: path.resolve(__dirname, "./dist"),
+    filename: 'bundle.main.js',
+    path: path.resolve(__dirname, './dist'),
     clean: true,
   },
 
@@ -18,41 +18,38 @@ module.exports = {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: [
-              ["@babel/preset-react", { runtime: "automatic" }],
-              "@babel/preset-env",
-            ],
+            presets: [['@babel/preset-react', { runtime: 'automatic' }], '@babel/preset-env'],
           },
         },
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
       },
     ],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./index.html"),
-      filename: "index.html",
+      template: path.resolve(__dirname, './index.html'),
+      filename: 'index.html',
     }),
 
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "./public"),
-          to: "./public",
+          from: path.resolve(__dirname, './public'),
+          to: './public',
           noErrorOnMissing: true,
         },
       ],
@@ -63,6 +60,6 @@ module.exports = {
   ],
 
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 };

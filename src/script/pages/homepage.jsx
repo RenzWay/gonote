@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Badge from "@mui/material/Badge";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import Badge from '@mui/material/Badge';
+import { Link } from 'react-router-dom';
 import {
   PlusSquare,
   ChartLine,
@@ -10,73 +10,68 @@ import {
   CheckCircle,
   StarIcon,
   FileX,
-} from "lucide-react";
-import Loading from "../lib/loading";
+} from 'lucide-react';
+import Loading from '../lib/loading';
 
-import { getGonoteTask } from "../model/model";
+import { getGonoteTask } from '../model/model';
+import { checkTasksForToday } from '../utils';
 
 const quickAction = [
   {
-    to: "/add",
-    title: "Add Task",
+    to: '/add',
+    title: 'Add Task',
     icon: <PlusSquare />,
-    bg: "bg-blue-400",
+    bg: 'bg-blue-400',
   },
   {
-    to: "/all",
-    title: "All Task",
+    to: '/all',
+    title: 'All Task',
     icon: <SquareMenu />,
-    bg: "bg-purple-400",
+    bg: 'bg-purple-400',
   },
 ];
 
 const boxActivities = [
   {
-    key: "total",
-    title: "Total Task",
+    key: 'total',
+    title: 'Total Task',
     filter: (tasks) => tasks.length,
     percent: (tasks) => 100, // total = 100%
     icon: <ChartLine size={45} color="#009dff" />,
-    bgColor: "bg-blue-100",
+    bgColor: 'bg-blue-100',
   },
   {
-    key: "active",
-    title: "Active Task",
+    key: 'active',
+    title: 'Active Task',
     filter: (tasks) => tasks.filter((t) => !t.complete).length,
     percent: (tasks) =>
       tasks.length === 0
         ? 0
-        : Math.round(
-            (tasks.filter((t) => !t.complete).length / tasks.length) * 100
-          ),
+        : Math.round((tasks.filter((t) => !t.complete).length / tasks.length) * 100),
     icon: <Clock size={45} color="#f97316" />,
-    bgColor: "bg-orange-100",
+    bgColor: 'bg-orange-100',
   },
   {
-    key: "complete",
-    title: "Complete Task",
+    key: 'complete',
+    title: 'Complete Task',
     filter: (tasks) => tasks.filter((t) => t.complete).length,
     percent: (tasks) =>
       tasks.length === 0
         ? 0
-        : Math.round(
-            (tasks.filter((t) => t.complete).length / tasks.length) * 100
-          ),
+        : Math.round((tasks.filter((t) => t.complete).length / tasks.length) * 100),
     icon: <CheckCircle size={45} color="#84cc16" />,
-    bgColor: "bg-lime-100",
+    bgColor: 'bg-lime-100',
   },
   {
-    key: "favorite",
-    title: "Favorite Task",
+    key: 'favorite',
+    title: 'Favorite Task',
     filter: (tasks) => tasks.filter((t) => t.favorite).length,
     percent: (tasks) =>
       tasks.length === 0
         ? 0
-        : Math.round(
-            (tasks.filter((t) => t.favorite).length / tasks.length) * 100
-          ),
+        : Math.round((tasks.filter((t) => t.favorite).length / tasks.length) * 100),
     icon: <StarIcon size={45} color="#facc15" />,
-    bgColor: "bg-yellow-100",
+    bgColor: 'bg-yellow-100',
   },
 ];
 
@@ -88,6 +83,7 @@ export default function HomePage() {
       try {
         const tasks = await getGonoteTask();
         setData(tasks);
+        checkTasksForToday();
       } catch (err) {
         console.error(err);
       } finally {
@@ -95,10 +91,6 @@ export default function HomePage() {
       }
     };
     fetchData();
-    // getGonoteTask().then((data) => {
-    //   console.log(data); // lihat format `date`
-    //   setData(data);
-    // });
   }, []);
 
   const recentTasks = [...data]
@@ -116,9 +108,7 @@ export default function HomePage() {
           <img src="/public/dashboard.png" width={50} alt="icon all task" />
           Dashboard
         </h1>
-        <p className="text-gray-600">
-          Track your activity and manage your task efficiently
-        </p>
+        <p className="text-gray-600">Track your activity and manage your task efficiently</p>
       </header>
       <section className="px-8 py-6 container-lg" role="main">
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -130,13 +120,9 @@ export default function HomePage() {
               <header className="flex justify-between items-start mb-4">
                 <div>
                   <p className="text-gray-500 text-sm mb-1">{item.title}</p>
-                  <h5 className="text-2xl font-bold text-gray-800">
-                    {item.filter(data)}
-                  </h5>
+                  <h5 className="text-2xl font-bold text-gray-800">{item.filter(data)}</h5>
                 </div>
-                <div className={`p-3 rounded-lg ${item.bgColor}`}>
-                  {item.icon}
-                </div>
+                <div className={`p-3 rounded-lg ${item.bgColor}`}>{item.icon}</div>
               </header>
 
               <div className="mt-3">
@@ -146,9 +132,7 @@ export default function HomePage() {
                     style={{ width: `${item.percent(data)}%` }}
                   />
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
-                  {item.percent(data)}%
-                </p>
+                <p className="text-sm text-gray-500 mt-1">{item.percent(data)}%</p>
               </div>
             </div>
           ))}
@@ -157,9 +141,7 @@ export default function HomePage() {
         <section className="mt-8 gap-6 grid grid-cols-1 sm:grid-cols-2">
           <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
             <header className="px-6 py-4 bg-gradient-to-r from-indigo-100 to-purple-100 border-b border-gray-300">
-              <h3 className="text-lg font-bold text-gray-800">
-                🚀 Quick Action
-              </h3>
+              <h3 className="text-lg font-bold text-gray-800">🚀 Quick Action</h3>
             </header>
             <div className="grid gap-3 p-4">
               {quickAction.map((item) => (
@@ -171,9 +153,7 @@ export default function HomePage() {
                   <div className="p-3 bg-white/30 rounded-full shadow-sm group-hover:bg-white/40 transition">
                     {item.icon}
                   </div>
-                  <span className="font-semibold tracking-wide text-md">
-                    {item.title}
-                  </span>
+                  <span className="font-semibold tracking-wide text-md">{item.title}</span>
                 </Link>
               ))}
             </div>
@@ -181,10 +161,7 @@ export default function HomePage() {
 
           <div className="bg-white rounded-2xl shadow-sm">
             <header className="px-6 py-4 rounded-t-2xl border-b border-gray-400 bg-gradient-to-r from-indigo-100 to-purple-100">
-              <h3 className="flex gap-1 text-gray-400 text-lg font-semibold">
-                <Clock size={45} color="#f97316" />
-                Recent Task
-              </h3>
+              <h3 className="flex gap-1 text-gray-400 text-lg font-semibold">Recent Task</h3>
             </header>
 
             <div className="px-6 py-8" id="taskList">
@@ -196,9 +173,7 @@ export default function HomePage() {
                     <FileX className="w-12 h-12 text-gray-400" />
                   </div>
                   <p className="text-xl font-semibold">There are no task</p>
-                  <p className="text-sm text-gray-400 mt-1">
-                    Please add task first
-                  </p>
+                  <p className="text-sm text-gray-400 mt-1">Please add task first</p>
                   <a
                     href="/add"
                     className="mt-6 inline-block px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition no-underline"
@@ -209,21 +184,15 @@ export default function HomePage() {
               ) : (
                 <ul className="flex flex-column gap-4 ">
                   {recentTasks.map((task) => (
-                    <Link
-                      to={"/all"}
-                      key={task.id}
-                      className="text-dark text-decoration-none"
-                    >
+                    <Link to={'/all'} key={task.id} className="text-dark text-decoration-none">
                       <li className="flex flex-col gap-2 list-none border-l-4 border-blue-500 bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
-                        <h5 className="font-semibold text-blue-800 text-base">
-                          {task.title}
-                        </h5>
+                        <h5 className="font-semibold text-blue-800 text-base">{task.title}</h5>
                         <p className="text-sm text-gray-700">{task.content}</p>
                         <span className="text-xs text-gray-500 mt-auto italic">
-                          {new Date(task.date).toLocaleDateString("id-ID", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
+                          {new Date(task.date).toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
                           })}
                         </span>
                       </li>
@@ -237,7 +206,7 @@ export default function HomePage() {
               <Link
                 className="flex items-center gap-2 text-decoration-none hover:opacity-80 transition-opacity"
                 to="/all"
-                style={{ color: "#9333ea" }}
+                style={{ color: '#9333ea' }}
               >
                 <span className="font-medium">View All Tasks</span>
                 <ArrowRight className="w-4 h-4" />

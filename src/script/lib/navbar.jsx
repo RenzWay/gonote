@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { X, Menu, LayoutDashboard, PlusCircle, SquareMenu } from "lucide-react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { X, Menu, LayoutDashboard, PlusCircle, SquareMenu } from 'lucide-react';
 
 const links = [
-  { to: "/", name: "Dashboard", icon: LayoutDashboard },
-  { to: "/add", name: "Add Task", icon: PlusCircle },
-  { to: "/all", name: "All Task", icon: SquareMenu },
+  { to: '/', name: 'Dashboard', icon: LayoutDashboard },
+  { to: '/add', name: 'Add Task', icon: PlusCircle },
+  { to: '/all', name: 'All Task', icon: SquareMenu },
 ];
 
 export default function Sidebar({ open, setOpen }) {
@@ -23,7 +23,7 @@ export default function Sidebar({ open, setOpen }) {
       <button
         onClick={() => setOpen(true)}
         className={`fixed top-4 left-4 z-50 p-2 bg-white shadow rounded ${
-          open ? "hidden" : "block"
+          open ? 'hidden' : 'block'
         }`}
       >
         <Menu size={24} />
@@ -32,16 +32,13 @@ export default function Sidebar({ open, setOpen }) {
       {/* Sidebar */}
       <aside
         className={`fixed left-0 top-0 h-full z-40 bg-white border-r shadow-md transition-all duration-300 overflow-hidden ${
-          open ? "w-64" : "w-0"
+          open ? 'w-64' : 'w-0'
         }`}
       >
         <div className="flex justify-between items-center px-4 py-3 border-b">
           <img src="/public/notes.png" width={35} alt="icon image" />
           <h1 className="text-xl font-bolder">GoNote</h1>
-          <button
-            onClick={() => setOpen(false)}
-            className="hover:bg-gray-100 p-1 rounded"
-          >
+          <button onClick={() => setOpen(false)} className="hover:bg-gray-100 p-1 rounded">
             <X size={24} />
           </button>
         </div>

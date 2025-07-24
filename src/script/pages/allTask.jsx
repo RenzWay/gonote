@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   TextField,
@@ -11,7 +11,7 @@ import {
   CardContent,
   CardActions,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Plus,
   Edit,
@@ -21,42 +21,37 @@ import {
   Circle,
   FileX,
   ClipboardListIcon,
-} from "lucide-react";
-import { Link } from "react-router-dom";
-import {
-  getGonoteTask,
-  deleteTask,
-  toggleFavorite,
-  toggleComplete,
-} from "../model/model";
-import Loading from "../lib/loading";
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getGonoteTask, deleteTask, toggleFavorite, toggleComplete } from '../model/model';
+import Loading from '../lib/loading';
 
 const getPriorityStyle = (priority) => {
   switch (priority) {
-    case "Low":
-      return "bg-green-500 text-white";
-    case "Medium":
-      return "bg-yellow-500 text-white";
-    case "High":
-      return "bg-orange-500 text-white";
-    case "Urgent":
-      return "bg-red-500 text-white";
+    case 'Low':
+      return 'bg-green-500 text-white';
+    case 'Medium':
+      return 'bg-yellow-500 text-white';
+    case 'High':
+      return 'bg-orange-500 text-white';
+    case 'Urgent':
+      return 'bg-red-500 text-white';
     default:
-      return "bg-gray-300 text-gray-800";
+      return 'bg-gray-300 text-gray-800';
   }
 };
 
 export default function AllTask() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [allStatus, setAllStatus] = useState("");
-  const [sortBy, setSortBy] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [allStatus, setAllStatus] = useState('');
+  const [sortBy, setSortBy] = useState('');
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const filteredData = data
     .filter((item) => {
-      if (allStatus === "Complete") return item.complete === true;
-      if (allStatus === "Active") return item.complete === false;
+      if (allStatus === 'Complete') return item.complete === true;
+      if (allStatus === 'Active') return item.complete === false;
       return true;
     })
     .filter((item) => {
@@ -71,13 +66,13 @@ export default function AllTask() {
 
   const sortedData = [...filteredData].sort((a, b) => {
     switch (sortBy) {
-      case "Sort by priority": {
+      case 'Sort by priority': {
         const priorityOrder = { Urgent: 4, High: 3, Medium: 2, Low: 1 };
         return priorityOrder[b.priority] - priorityOrder[a.priority];
       }
-      case "Sort by name":
+      case 'Sort by name':
         return a.title.localeCompare(b.title);
-      case "Sort by date":
+      case 'Sort by date':
       default:
         return new Date(b.date) - new Date(a.date);
     }
@@ -107,9 +102,7 @@ export default function AllTask() {
             <img src="/public/check-list.png" width={50} alt="icon all task" />
             All Task
           </h1>
-          <p className="text-sm text-slate-500">
-            Manage and organize all your tasks here
-          </p>
+          <p className="text-sm text-slate-500">Manage and organize all your tasks here</p>
         </div>
         <Link
           to="/add"
@@ -129,18 +122,13 @@ export default function AllTask() {
           />
           <ControlSearch
             title="Filter Status"
-            ArrayData={["None", "Active", "Complete"]}
+            ArrayData={['None', 'Active', 'Complete']}
             data={allStatus}
             setData={(e) => setAllStatus(e.target.value)}
           />
           <ControlSearch
             title="Sort By"
-            ArrayData={[
-              "None",
-              "Sort by date",
-              "Sort by priority",
-              "Sort by name",
-            ]}
+            ArrayData={['None', 'Sort by date', 'Sort by priority', 'Sort by name']}
             data={sortBy}
             setData={(e) => setSortBy(e.target.value)}
           />
@@ -173,21 +161,29 @@ function CardView({ data, setData }) {
     await deleteTask(id);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
+
   const handleFavorite = async (id, currentValue) => {
     await toggleFavorite(id, currentValue);
     setData((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, favorite: !item.favorite } : item
-      )
+      prev.map((item) => (item.id === id ? { ...item, favorite: !item.favorite } : item)),
     );
   };
+
   const handleToggleComplete = async (id, currentValue) => {
-    await toggleComplete(id, currentValue);
+    // Optimistically update UI
     setData((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, complete: !item.complete } : item
-      )
+      prev.map((item) => (item.id === id ? { ...item, complete: !item.complete } : item)),
     );
+
+    try {
+      await toggleComplete(id, currentValue);
+    } catch (err) {
+      console.error('Gagal update ke Firestore', err);
+      // Optional: Revert kalau gagal
+      setData((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, complete: currentValue } : item)),
+      );
+    }
   };
 
   return (
@@ -196,7 +192,7 @@ function CardView({ data, setData }) {
         <Card
           key={item.id}
           className="rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition duration-300"
-          sx={{ backgroundColor: "#f9fafb", padding: "16px" }}
+          sx={{ backgroundColor: '#f9fafb', padding: '16px' }}
         >
           <CardContent className="space-y-2">
             <Typography variant="h6" className="font-semibold text-slate-800">
@@ -209,28 +205,24 @@ function CardView({ data, setData }) {
               </span>
               <span
                 className={`ml-2 text-xs font-medium px-2 py-1 rounded-full ${
-                  item.complete
-                    ? "bg-green-100 text-green-700"
-                    : "bg-yellow-100 text-yellow-700"
+                  item.complete ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                 }`}
               >
-                {item.complete ? "Complete" : "Active"}
+                {item.complete ? 'Complete' : 'Active'}
               </span>
             </Typography>
-            <Typography className="text-sm text-slate-600">
-              {item.content}
-            </Typography>
+            <Typography className="text-sm text-slate-600">{item.content}</Typography>
             <div className="flex justify-between items-center pt-2">
               <span className="text-xs text-gray-400">
-                {new Date(item.date).toLocaleDateString("id-ID", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
+                {new Date(item.date).toLocaleDateString('id-ID', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
                 })}
               </span>
               <span
                 className={`text-xs px-2 py-1 rounded-full font-semibold ${getPriorityStyle(
-                  item.priority
+                  item.priority,
                 )}`}
               >
                 {item.priority}
@@ -238,27 +230,45 @@ function CardView({ data, setData }) {
             </div>
           </CardContent>
           <CardActions className="flex justify-end gap-2 pt-2">
-            <Button onClick={() => handleFavorite(item.id, item.favorite)}>
+            <Button
+              color="warning"
+              onClick={() => handleFavorite(item.id, item.favorite)}
+              className="hover:bg-yellow-100 rounded-full"
+            >
               <Star
                 size={18}
-                fill={item.favorite ? "#facc15" : "none"}
-                color={item.favorite ? "#facc15" : "#9ca3af"}
+                fill={item.favorite ? '#facc15' : 'none'}
+                color={item.favorite ? '#facc15' : '#9ca3af'}
               />
             </Button>
-            <Button component={Link} to={`/edit/${item.id}`}>
+
+            <Button
+              color="success"
+              component={Link}
+              to={`/edit/${item.id}`}
+              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-600 rounded-full"
+            >
               <Edit size={18} />
             </Button>
-            <Button onClick={() => handleDelete(item.id)}>
+
+            <Button
+              color="error"
+              onClick={() => handleDelete(item.id)}
+              className="bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
+            >
               <Trash2 size={18} />
             </Button>
+
             <Button
+              color="success"
               onClick={() => handleToggleComplete(item.id, item.complete)}
+              className={`${
+                item.complete
+                  ? 'bg-green-100 text-green-600 hover:bg-green-200'
+                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+              } rounded-full`}
             >
-              {item.complete ? (
-                <CheckCircle size={18} className="text-green-500" />
-              ) : (
-                <Circle size={18} className="text-gray-400" />
-              )}
+              {item.complete ? <CheckCircle size={18} /> : <Circle size={18} />}
             </Button>
           </CardActions>
         </Card>
@@ -267,16 +277,11 @@ function CardView({ data, setData }) {
   );
 }
 
-function ControlSearch({ title, ArrayData, setData, data, className = "" }) {
+function ControlSearch({ title, ArrayData, setData, data, className = '' }) {
   return (
     <FormControl fullWidth className={className}>
       <InputLabel id={`${title}-label`}>{title}</InputLabel>
-      <Select
-        labelId={`${title}-label`}
-        value={data}
-        label={title}
-        onChange={setData}
-      >
+      <Select labelId={`${title}-label`} value={data} label={title} onChange={setData}>
         {ArrayData.map((item) => (
           <MenuItem key={item} value={item}>
             {item}

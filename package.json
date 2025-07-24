@@ -1,10 +1,12 @@
 {
   "name": "webpack",
-  "version": "3.10.4",
+  "version": "3.12.2",
   "private": true,
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "dev": "webpack serve --config webpack.dev.js"
+    "dev": "webpack serve --config webpack.dev.js",
+    "write": "npx prettier . --write",
+    "check": "npx prettier . --check"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +42,7 @@
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "postcss-loader": "^8.1.1",
+    "prettier": "3.6.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.7.0",
@@ -47,7 +50,7 @@
     "sass-loader": "^16.0.5",
     "style-loader": "^4.0.0",
     "styled-components": "^6.1.19",
-    "sweetalert2": "^11.22.2",
+    "sweetalert2": "^11.6.13",
     "tailwindcss": "^4.1.11",
     "terser-webpack-plugin": "^5.3.14",
     "webpack": "^5.99.9",

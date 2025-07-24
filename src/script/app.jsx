@@ -1,26 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import AddTaskPage from "./pages/addTask.jsx";
-import HomePage from "./pages/homepage.jsx";
-import Sidebar from "./lib/navbar.jsx";
-import AllTask from "./pages/allTask.jsx";
-import EditTaskPage from "./pages/EditTask.jsx";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import AddTaskPage from './pages/addTask.jsx';
+import HomePage from './pages/homepage.jsx';
+import Sidebar from './lib/navbar.jsx';
+import AllTask from './pages/allTask.jsx';
+import EditTaskPage from './pages/EditTask.jsx';
 
 const rute = [
   {
-    path: "/",
+    path: '/',
     element: <HomePage />,
   },
   {
-    path: "/add",
+    path: '/add',
     element: <AddTaskPage />,
   },
   {
-    path: "/all",
+    path: '/all',
     element: <AllTask />,
   },
   {
-    path: "/edit/:id",
+    path: '/edit/:id',
     element: <EditTaskPage />,
   },
 ];
@@ -52,8 +52,7 @@ function Footer() {
     <footer className="bg-white border-t mt-10 py-6 px-4 sm:px-8 text-sm text-gray-600">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
         <p className="text-center sm:text-left">
-          © {new Date().getFullYear()} <strong>GoNote</strong>. All rights
-          reserved.
+          © {new Date().getFullYear()} <strong>GoNote</strong>. All rights reserved.
         </p>
         <div className="flex gap-4 text-blue-500">
           <a href="#" className="hover:underline">

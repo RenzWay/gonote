@@ -1,49 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { addGonoteTask } from "../model/model";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import React, { useState, useEffect } from 'react';
+import { addGonoteTask } from '../model/model';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import Swal from "sweetalert2";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useNavigate } from 'react-router-dom';
 
-const priorityItem = [
-  { name: "Low" },
-  { name: "Medium" },
-  { name: "High" },
-  { name: "Urgent" },
-];
+const priorityItem = [{ name: 'Low' }, { name: 'Medium' }, { name: 'High' }, { name: 'Urgent' }];
 
-const categoryItem = ["Personal", "Work", "School", "Task", "Other"];
+const categoryItem = ['Personal', 'Work', 'School', 'Task', 'Other'];
 
 export default function AddTaskPage() {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [date, setDate] = useState(dayjs());
-  const [priority, setPriority] = useState("");
-  const [category, setCategory] = useState("");
+  const [priority, setPriority] = useState('');
+  const [category, setCategory] = useState('');
   const [favorite, setFavorite] = useState(false);
   const [complete, setComplete] = useState(false);
 
   const handleNavigate = () => {
     Swal.fire({
-      title: "Sukses!",
-      text: "Task berhasil ditambahkan!",
-      icon: "success",
-      confirmButtonText: "Lihat Task",
+      title: 'Sukses!',
+      text: 'Task berhasil ditambahkan!',
+      icon: 'success',
+      confirmButtonText: 'Lihat Task',
     }).then((result) => {
-      navigate("/all");
+      navigate('/all');
     });
   };
 
@@ -57,23 +52,23 @@ export default function AddTaskPage() {
       priority,
       category,
       favorite,
-      complete
+      complete,
     );
 
     if (gonoteAdd) {
       handleNavigate();
     } else {
       Swal.fire({
-        icon: "error",
-        text: "tidak berhasil ada kegagalan",
+        icon: 'error',
+        text: 'tidak berhasil ada kegagalan',
       });
     }
 
-    setTitle("");
-    setCategory("");
-    setContent("");
+    setTitle('');
+    setCategory('');
+    setContent('');
     setDate(null);
-    setPriority("");
+    setPriority('');
     setFavorite(false);
     setComplete(false);
   };
@@ -84,17 +79,11 @@ export default function AddTaskPage() {
           <img src="/public/add.png" width={50} alt="icon all task" />
           Add New Task
         </h1>
-        <p className="text-gray-600">
-          Create a new task to stay organized and productive
-        </p>
+        <p className="text-gray-600">Create a new task to stay organized and productive</p>
       </header>
 
       <section className="flex justify-center ">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 sm:space-y-6"
-          id="addTaskForm"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:space-y-6" id="addTaskForm">
           <TextField
             color="info"
             variant="outlined"

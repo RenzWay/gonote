@@ -8,20 +8,15 @@ function TableTask({ data, setData }) {
   const handleFavorite = async (id, currentValue) => {
     await toggleFavorite(id, currentValue);
     setData((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, favorite: !item.favorite } : item
-      )
+      prev.map((item) => (item.id === id ? { ...item, favorite: !item.favorite } : item)),
     );
   };
 
-  const headTable = ["No", "Title", "Category", "Date", "Priority", "Actions"];
+  const headTable = ['No', 'Title', 'Category', 'Date', 'Priority', 'Actions'];
 
   return (
     <div className="overflow-auto -mx-4 sm:mx-0">
-      <TableContainer
-        component={Paper}
-        className="shadow-sm mt-6 min-w-[800px] sm:min-w-0"
-      >
+      <TableContainer component={Paper} className="shadow-sm mt-6 min-w-[800px] sm:min-w-0">
         <Table>
           <TableHead>
             <TableRow className="bg-light">
@@ -30,8 +25,8 @@ function TableTask({ data, setData }) {
                   key={row}
                   className="font-semibold"
                   sx={{
-                    minWidth: row === "Title" ? 250 : "auto",
-                    whiteSpace: "nowrap",
+                    minWidth: row === 'Title' ? 250 : 'auto',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {row}
@@ -41,27 +36,18 @@ function TableTask({ data, setData }) {
           </TableHead>
           <TableBody>
             {data.map((row, idx) => (
-              <TableRow
-                key={row.id}
-                className="hover:bg-gray-50 transition-colors"
-              >
+              <TableRow key={row.id} className="hover:bg-gray-50 transition-colors">
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>
                   <div className="font-medium">{row.title}</div>
-                  <div className="text-sm text-muted line-clamp-2 max-w-md">
-                    {row.content}
-                  </div>
+                  <div className="text-sm text-muted line-clamp-2 max-w-md">{row.content}</div>
                 </TableCell>
                 <TableCell>
                   <span className="badge bg-primary">{row.category}</span>
                 </TableCell>
+                <TableCell>{row.date?.toDate?.().toLocaleDateString?.() || 'Unknown'}</TableCell>
                 <TableCell>
-                  {row.date?.toDate?.().toLocaleDateString?.() || "Unknown"}
-                </TableCell>
-                <TableCell>
-                  <span className={`badge ${getPriorityStyle(row.priority)}`}>
-                    {row.priority}
-                  </span>
+                  <span className={`badge ${getPriorityStyle(row.priority)}`}>{row.priority}</span>
                 </TableCell>
                 <TableCell>
                   <div className="d-flex gap-1 sm:gap-2 flex-nowrap">
@@ -71,8 +57,8 @@ function TableTask({ data, setData }) {
                     >
                       <Star
                         size={16}
-                        color={row.favorite ? "#facc15" : "#9ca3af"}
-                        fill={row.favorite ? "#facc15" : "none"}
+                        color={row.favorite ? '#facc15' : '#9ca3af'}
+                        fill={row.favorite ? '#facc15' : 'none'}
                       />
                     </button>
                     <button className="btn btn-light btn-sm rounded-circle p-1">

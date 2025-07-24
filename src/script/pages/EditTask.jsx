@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getTaskById, updateTask } from "../model/model";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getTaskById, updateTask } from '../model/model';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const priorityItem = ["Low", "Medium", "High", "Urgent"];
-const categoryItem = ["Personal", "Work", "School", "Task", "Other"];
+const priorityItem = ['Low', 'Medium', 'High', 'Urgent'];
+const categoryItem = ['Personal', 'Work', 'School', 'Task', 'Other'];
 
 export default function EditTaskPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [date, setDate] = useState(dayjs());
-  const [priority, setPriority] = useState("");
-  const [category, setCategory] = useState("");
+  const [priority, setPriority] = useState('');
+  const [category, setCategory] = useState('');
   const [favorite, setFavorite] = useState(false);
   const [complete, setComplete] = useState(false);
 
@@ -42,8 +42,8 @@ export default function EditTaskPage() {
         setFavorite(task.favorite || false);
         setComplete(task.complete || false);
       } else {
-        console.warn("Task tidak ditemukan dengan ID:", id);
-        navigate("/all"); // Atau tampilkan pesan error
+        console.warn('Task tidak ditemukan dengan ID:', id);
+        navigate('/all'); // Atau tampilkan pesan error
         return;
       }
     };
@@ -61,7 +61,7 @@ export default function EditTaskPage() {
       favorite,
       complete,
     });
-    navigate("/all");
+    navigate('/all');
   };
 
   return (
@@ -96,10 +96,7 @@ export default function EditTaskPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormControl fullWidth>
               <InputLabel>Priority</InputLabel>
-              <Select
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
-              >
+              <Select value={priority} onChange={(e) => setPriority(e.target.value)}>
                 {priorityItem.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
@@ -119,10 +116,7 @@ export default function EditTaskPage() {
 
             <FormControl className="col-span-full">
               <InputLabel>Category</InputLabel>
-              <Select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
+              <Select value={category} onChange={(e) => setCategory(e.target.value)}>
                 {categoryItem.map((item) => (
                   <MenuItem key={item} value={item}>
                     {item}
