@@ -1,10 +1,34 @@
+const CACHES_NAME = "gonote-v1";
+
+const ASSET_TO_CACHES = [
+  "/",
+  "/index.html",
+  "/main.css",
+  "/bundle.main.js",
+  "/public",
+];
+
 self.addEventListener("install", (event) => {
   console.log("[SW] Installed");
+  event.waitUntil(
+    caches.open(CACHES_NAME).then((cache) => {
+      return cache.addAll(ASSET_TO_CACHES);
+    })
+  );
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   console.log("[SW] Activated");
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((name) => name !== CACHES_NAME)
+          .map((name) => caches.delete(name))
+      );
+    })
+  );
 });
 
 self.addEventListener("fetch", (event) => {
