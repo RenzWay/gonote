@@ -29,7 +29,7 @@ function showTaskNotification(title, taskTitle, taskContent) {
   const options = {
     body: `${taskTitle} - ${taskContent}`,
     icon: './public/notes.png',
-    badge: './public/react.png',
+    badge: './public/notes.png',
     data: '/all',
   };
 
