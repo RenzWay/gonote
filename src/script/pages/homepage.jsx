@@ -91,6 +91,7 @@ export default function HomePage() {
       }
     };
     fetchData();
+    console.log('hello world');
   }, []);
 
   const recentTasks = [...data]

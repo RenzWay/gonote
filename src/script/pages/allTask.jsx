@@ -230,11 +230,7 @@ function CardView({ data, setData }) {
             </div>
           </CardContent>
           <CardActions className="flex justify-end gap-2 pt-2">
-            <Button
-              color="warning"
-              onClick={() => handleFavorite(item.id, item.favorite)}
-              className="hover:bg-yellow-100 rounded-full"
-            >
+            <Button color="warning" onClick={() => handleFavorite(item.id, item.favorite)}>
               <Star
                 size={18}
                 fill={item.favorite ? '#facc15' : 'none'}
@@ -242,32 +238,15 @@ function CardView({ data, setData }) {
               />
             </Button>
 
-            <Button
-              color="success"
-              component={Link}
-              to={`/edit/${item.id}`}
-              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-600 rounded-full"
-            >
+            <Button color="success" component={Link} to={`/edit/${item.id}`}>
               <Edit size={18} />
             </Button>
 
-            <Button
-              color="error"
-              onClick={() => handleDelete(item.id)}
-              className="bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
-            >
+            <Button color="error" onClick={() => handleDelete(item.id)}>
               <Trash2 size={18} />
             </Button>
 
-            <Button
-              color="success"
-              onClick={() => handleToggleComplete(item.id, item.complete)}
-              className={`${
-                item.complete
-                  ? 'bg-green-100 text-green-600 hover:bg-green-200'
-                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-              } rounded-full`}
-            >
+            <Button color="success" onClick={() => handleToggleComplete(item.id, item.complete)}>
               {item.complete ? <CheckCircle size={18} /> : <Circle size={18} />}
             </Button>
           </CardActions>
