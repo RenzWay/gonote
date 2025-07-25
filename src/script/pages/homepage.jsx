@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Badge from '@mui/material/Badge';
-import { Link } from 'react-router-dom';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 import {
   PlusSquare,
   ChartLine,
@@ -12,6 +13,7 @@ import {
   FileX,
 } from 'lucide-react';
 import Loading from '../lib/loading';
+import { motion } from 'framer-motion';
 
 import { getGonoteTask } from '../model/model';
 import { checkTasksForToday } from '../utils';
@@ -104,14 +106,33 @@ export default function HomePage() {
 
   return (
     <>
-      <header className="px-20 py-6 bg-gradient-to-r from-blue-50 to-purple-50">
+      <motion.header
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
+        className="px-20 py-6 bg-gradient-to-r from-blue-50 to-purple-50"
+      >
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link underline="hover" className="text- text-decoration-none" href="/">
+            Dashboard
+          </Link>
+        </Breadcrumbs>
         <h1 className="text-2xl flex gap-1 font-bold text-gray-800 mb-2">
           <img src="/public/dashboard.png" width={50} alt="icon all task" />
           Dashboard
         </h1>
         <p className="text-gray-600">Track your activity and manage your task efficiently</p>
-      </header>
-      <section className="px-8 py-6 container-lg" role="main">
+      </motion.header>
+
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 1 }}
+        className="px-8 py-6 container-lg"
+        role="main"
+      >
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {boxActivities.map((item) => (
             <div
@@ -219,7 +240,7 @@ export default function HomePage() {
         {/* <footer className="p-10">
           <h1>inisial</h1>
         </footer> */}
-      </section>
+      </motion.section>
     </>
   );
 }

@@ -9,8 +9,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Link from '@mui/material/Link';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -73,8 +76,25 @@ export default function AddTaskPage() {
     setComplete(false);
   };
   return (
-    <section className=" bg-gray-50/30 " role="body">
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -30 }}
+      transition={{ duration: 1, ease: 'easeInOut' }}
+      className="bg-gray-50/30"
+      role="body"
+    >
       <header className="text-center py-5 bg-gradient-to-r from-blue-50 to-purple-50 mb-8">
+        <div className="flex justify-center">
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link underline="hover" className="text- text-decoration-none" href={'/'}>
+              Dashboard
+            </Link>
+            <Link underline="hover" href="/add">
+              Add Task
+            </Link>
+          </Breadcrumbs>
+        </div>
         <h1 className="text-2xl flex gap-1 justify-content-center font-bold text-gray-800 mb-2">
           <img src="/public/add.png" width={50} alt="icon all task" />
           Add New Task
@@ -153,7 +173,7 @@ export default function AddTaskPage() {
           </Button>
         </form>
       </section>
-    </section>
+    </motion.section>
   );
 }
 

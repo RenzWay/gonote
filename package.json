@@ -1,6 +1,6 @@
 {
   "name": "webpack",
-  "version": "3.12.2",
+  "version": "3.19.5",
   "private": true,
   "scripts": {
     "build": "webpack --config webpack.prod.js",
@@ -35,10 +35,12 @@
     "dotenv": "^17.2.0",
     "dotenv-webpack": "^8.1.1",
     "esbuild-loader": "^4.3.0",
+    "framer-motion": "^12.23.9",
     "html-webpack-plugin": "^5.6.3",
     "lucide": "^0.525.0",
     "lucide-react": "^0.525.0",
     "mini-css-extract-plugin": "^2.9.2",
+    "motion": "^12.23.9",
     "postcss": "^8.5.6",
     "postcss-import": "^16.1.1",
     "postcss-loader": "^8.1.1",

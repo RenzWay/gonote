@@ -10,6 +10,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { motion } from 'framer-motion';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -65,7 +66,13 @@ export default function EditTaskPage() {
   };
 
   return (
-    <section className="bg-gray-50/30">
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 1 }}
+      className="bg-gray-50/30"
+    >
       <header className="text-center py-5 bg-gradient-to-r from-blue-50 to-purple-50 mb-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Edit Task</h1>
         <p className="text-gray-600">Update and adjust your task</p>
@@ -154,6 +161,6 @@ export default function EditTaskPage() {
           </Button>
         </form>
       </section>
-    </section>
+    </motion.section>
   );
 }
