@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Badge from '@mui/material/Badge';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   PlusSquare,
   ChartLine,
@@ -114,7 +114,7 @@ export default function HomePage() {
         className="px-20 py-6 bg-gradient-to-r from-blue-50 to-purple-50"
       >
         <Breadcrumbs aria-label="breadcrumb">
-          <Link underline="hover" className="text- text-decoration-none" to="/">
+          <Link className="text- text-decoration-none" to={"/"}>
             Dashboard
           </Link>
         </Breadcrumbs>
