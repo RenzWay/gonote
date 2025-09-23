@@ -30,7 +30,7 @@
 
 1. **Clone Repository**
    ```bash
-   git clone https://github.com/username/gonote.git
+   git clone https://github.com/RenzWay/gonote.git
    cd gonote
    ```
 
