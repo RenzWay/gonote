@@ -1,6 +1,8 @@
 # 📋 <img src="./public/notes.png" width="32" height="32"/> Gonote
 
-**Gonote** is a modern, beautifully designed web application specifically crafted for students to manage their academic life. With an intuitive interface and powerful filtering capabilities, Gonote helps you organize assignments, deadlines, schedules, and any important academic notes in one convenient place 📚✨.
+**Gonote** is a modern, beautifully designed web application specifically crafted for students to manage their academic
+life. With an intuitive interface and powerful filtering capabilities, Gonote helps you organize assignments, deadlines,
+schedules, and any important academic notes in one convenient place 📚✨.
 
 > 🎓 The ultimate productivity solution for modern students. Manage all your academic activities with style!
 
@@ -22,6 +24,7 @@
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) (version 16+ recommended)
 - [Git](https://git-scm.com/)
 - Modern browser (Chrome, Firefox, Safari, Edge)
@@ -56,26 +59,25 @@
 ### Getting Started with Gonote
 
 1. **Add New Note**
-   - Click the ➕ "Add Note" button
-   - Fill in note details (title, description, category, deadline)
-   - Save and the note will appear on your dashboard
+    - Click the ➕ "Add Note" button
+    - Fill in note details (title, description, category, deadline)
+    - Save and the note will appear on your dashboard
 
 2. **Using Filters**
-   - Use filter dropdown to view notes by:
-     - Specific subjects
-     - Status (completed/pending)
-     - Priority (high/medium/low)
-     - Deadline dates
+    - Use filter dropdown to view notes by:
+        - Specific subjects
+        - Status (completed/pending)
+        - Priority (high/medium/low)
+        - Deadline dates
 
 3. **Managing Notes**
-   - Edit notes by clicking the ✏️ icon
-   - Delete unnecessary notes
-   - Mark as completed when tasks are done
+    - Edit notes by clicking the ✏️ icon
+    - Delete unnecessary notes
+    - Mark as completed when tasks are done
 
 4. **Customize Display**
-   - Toggle between light/dark mode
-   - Set up categories according to your needs
-   - Adjust layout to your preference
+    - Set up categories according to your needs
+    - Adjust layout to your preference
 
 ---
 
@@ -111,6 +113,7 @@ We welcome contributions from the community! Here's how you can help:
 5. Open a Pull Request with clear description
 
 ### Contribution Ideas
+
 - Export/import data functionality
 - Google Calendar integration
 - Push notifications for deadlines
@@ -121,13 +124,14 @@ We welcome contributions from the community! Here's how you can help:
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute with proper attribution.
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute with proper
+attribution.
 
 ---
 
 ## 🙏 Acknowledgments
 
-Thanks to everyone who has provided feedback and contributions to make Gonote better! 
+Thanks to everyone who has provided feedback and contributions to make Gonote better!
 
 This app was built with ❤️ to help fellow students be more productive and organized.
 
@@ -137,13 +141,14 @@ This app was built with ❤️ to help fellow students be more productive and or
 
 - 🐛 **Report Bug**: Create an issue on GitHub
 - 💡 **Feature Request**: Discuss in GitHub Discussions
-- 📧 **Email**: [your-email@example.com](mailto:your-email@example.com)
+- 📧 **Email**:
 
 ---
 
 ## 🌟 Show Your Support
 
-If you find this project helpful, please consider giving it a ⭐ on GitHub! It helps others discover Gonote and motivates us to keep improving.
+If you find this project helpful, please consider giving it a ⭐ on GitHub! It helps others discover Gonote and motivates
+us to keep improving.
 
 ---
 

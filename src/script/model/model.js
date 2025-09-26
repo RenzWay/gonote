@@ -1,5 +1,51 @@
-import { addDoc, collection, getDocs, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from './firebase';
+
+export async function addDaySchedule(data) {
+  try {
+    const response = await addDoc(collection(db, 'schedule'), data);
+    console.log('berhasil menambahkan schedule', response);
+    return response;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+export async function updateDaySchedule(id, data) {
+  try {
+    const ref = doc(db, 'schedule', id);
+    await updateDoc(ref, data);
+    console.log('berhasil update schedule');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+export async function deleteDaySchedule(id) {
+  try {
+    const ref = doc(db, 'schedule', id);
+    await deleteDoc(ref);
+    console.log('berhasil hapus schedule');
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+export async function getDaySchedule() {
+  try {
+    const response = await getDocs(collection(db, 'schedule'));
+    return response.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 export async function getGonoteTask() {
   const snapshot = await getDocs(collection(db, 'task'));

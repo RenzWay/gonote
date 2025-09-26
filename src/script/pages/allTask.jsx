@@ -1,33 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Paper,
-  TextField,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  Button,
-  Card,
-  CardContent,
-  CardActions,
+  TextField,
   Typography,
 } from '@mui/material';
-import {
-  Plus,
-  Edit,
-  Star,
-  Trash2,
-  CheckCircle,
-  Circle,
-  FileX,
-  ClipboardListIcon,
-} from 'lucide-react';
+import { CheckCircle, Circle, Edit, FileX, Plus, Star, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getGonoteTask, deleteTask, toggleFavorite, toggleComplete } from '../model/model';
+import { deleteTask, getGonoteTask, toggleComplete, toggleFavorite } from '../model/model';
 import Loading from '../lib/loading';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 // import Link from '@mui/material';
-import { motion, scale } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const getPriorityStyle = (priority) => {
   switch (priority) {
@@ -205,13 +195,13 @@ function CardView({ data, setData }) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {data.map((item, i) => (
+      {data.map((item) => (
         <motion.div
           key={item.id}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ type: 'tween', duration: 0.3 }}
+          // transition={{ type: 'tween', duration: 0.3 }}
           whileHover={{
             scale: 1.02,
             filter: 'drop-shadow(0 5px 10px rgba(0,0,0,0.1))',

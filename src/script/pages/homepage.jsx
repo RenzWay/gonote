@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Badge from '@mui/material/Badge';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { Link } from 'react-router-dom';
 import {
-  PlusSquare,
-  ChartLine,
-  SquareMenu,
   ArrowRight,
-  Clock,
+  ChartLine,
   CheckCircle,
-  StarIcon,
+  Clock,
   FileX,
+  PlusSquare,
+  SquareMenu,
+  StarIcon,
 } from 'lucide-react';
 import Loading from '../lib/loading';
 import { motion } from 'framer-motion';
@@ -38,7 +37,7 @@ const boxActivities = [
     key: 'total',
     title: 'Total Task',
     filter: (tasks) => tasks.length,
-    percent: (tasks) => 100, // total = 100%
+    percent: (tasks) => 100,
     icon: <ChartLine size={45} color="#009dff" />,
     bgColor: 'bg-blue-100',
   },
@@ -93,7 +92,6 @@ export default function HomePage() {
       }
     };
     fetchData();
-    console.log('hello world');
   }, []);
 
   const recentTasks = [...data]
@@ -114,7 +112,7 @@ export default function HomePage() {
         className="px-20 py-6 bg-gradient-to-r from-blue-50 to-purple-50"
       >
         <Breadcrumbs aria-label="breadcrumb">
-          <Link className="text- text-decoration-none" to={"/"}>
+          <Link className="text- text-decoration-none" to={'/'}>
             Dashboard
           </Link>
         </Breadcrumbs>

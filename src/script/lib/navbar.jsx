@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Menu, LayoutDashboard, PlusCircle, SquareMenu } from 'lucide-react';
+import {
+  CalendarFoldIcon,
+  LayoutDashboard,
+  Menu,
+  PlusCircle,
+  SquareMenu,
+  TestTubesIcon,
+  X,
+} from 'lucide-react';
 
 const links = [
   { to: '/', name: 'Dashboard', icon: LayoutDashboard },
   { to: '/add', name: 'Add Task', icon: PlusCircle },
   { to: '/all', name: 'All Task', icon: SquareMenu },
+  { to: '/schedule', name: 'Schedule', icon: CalendarFoldIcon },
+  { to: '/test', name: 'test', icon: TestTubesIcon },
 ];
 
 export default function Sidebar({ open, setOpen }) {
   return (
     <>
-      {/* Overlay untuk menutup sidebar saat klik di luar */}
       {open && (
         <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30"
@@ -19,7 +28,6 @@ export default function Sidebar({ open, setOpen }) {
         />
       )}
 
-      {/* Button buka menu selalu tampil saat sidebar tertutup */}
       <button
         onClick={() => setOpen(true)}
         className={`fixed top-4 left-4 z-50 p-2 bg-white shadow rounded ${

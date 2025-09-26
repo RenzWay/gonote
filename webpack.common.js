@@ -54,8 +54,6 @@ module.exports = {
         },
       ],
     }),
-
-    // ✅ Inject all .env variables into process.env
     new Dotenv(),
   ],
 

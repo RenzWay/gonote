@@ -1,11 +1,13 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import AddTaskPage from './pages/addTask.jsx';
 import HomePage from './pages/homepage.jsx';
 import Sidebar from './lib/navbar.jsx';
 import AllTask from './pages/allTask.jsx';
 import EditTaskPage from './pages/EditTask.jsx';
+import SchedulerPage from './pages/sched.jsx';
+import TestPage from './pages/page.test';
 
 const rute = [
   {
@@ -27,6 +29,16 @@ const rute = [
     key: 4,
     path: '/edit/:id',
     element: <EditTaskPage />,
+  },
+  {
+    key: 5,
+    path: '/schedule',
+    element: <SchedulerPage />,
+  },
+  {
+    key: 6,
+    path: '/test',
+    element: <TestPage />,
   },
 ];
 
