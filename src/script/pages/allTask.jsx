@@ -4,35 +4,25 @@ import {
   Card,
   CardActions,
   CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from '@mui/material';
-import { CheckCircle, Circle, Edit, FileX, Plus, Star, Trash2 } from 'lucide-react';
+import { blueTheme, containerVariants, getPriorityStyle, styles } from '../lib/styles';
+import { CheckCircle, Circle, Clock, Edit, FileX, Plus, Star, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { deleteTask, getGonoteTask, toggleComplete, toggleFavorite } from '../model/model';
 import Loading from '../lib/loading';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-// import Link from '@mui/material';
 import { motion } from 'framer-motion';
-
-const getPriorityStyle = (priority) => {
-  switch (priority) {
-    case 'Low':
-      return 'bg-green-500 text-white';
-    case 'Medium':
-      return 'bg-yellow-500 text-white';
-    case 'High':
-      return 'bg-orange-500 text-white';
-    case 'Urgent':
-      return 'bg-red-500 text-white';
-    default:
-      return 'bg-gray-300 text-gray-800';
-  }
-};
 
 export default function AllTask() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,6 +30,7 @@ export default function AllTask() {
   const [sortBy, setSortBy] = useState('');
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, task: null });
 
   const filteredData = data
     .filter((item) => {
@@ -87,45 +78,66 @@ export default function AllTask() {
     fetchData();
   }, []);
 
+  const handleDeleteConfirm = async () => {
+    if (deleteDialog.task) {
+      await deleteTask(deleteDialog.task.id);
+      setData((prev) => prev.filter((item) => item.id !== deleteDialog.task.id));
+      setDeleteDialog({ open: false, task: null });
+    }
+  };
+
   return (
     <motion.section
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 1, ease: 'easeInOut' }}
-      className="container-lg mt-8 px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      style={styles.container}
     >
-      <header className="flex flex-col sm:flex-row justify-between items-center mb-6">
-        <div>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link className="text-blue-400 text-decoration-none" to={'/'}>
-              Dashboard
-            </Link>
-            <Link className="text-decoration-none text-gray-500" to="/all">
-              All Task
-            </Link>
-          </Breadcrumbs>
-          <h1 className="flex gap-1 text-3xl font-bold text-slate-800">
-            <img src="/public/check-list.png" width={50} alt="icon all task" />
-            All Task
-          </h1>
-          <p className="text-sm text-slate-500">Manage and organize all your tasks here</p>
-        </div>
-        <Link
-          to="/add"
-          className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition-all flex gap-2 items-center mt-4 sm:mt-0 text-decoration-none"
+      {/* Header dengan gradient yang sama seperti Schedule */}
+      <motion.header
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        style={styles.header}
+      >
+        <Breadcrumbs
+          sx={{
+            '& a': {
+              color: 'rgba(255,255,255,0.9)',
+              textDecoration: 'none',
+              transition: 'color 0.2s',
+            },
+            '& a:hover': { color: 'white' },
+          }}
         >
-          <Plus size={20} /> Add Task
-        </Link>
-      </header>
+          <Link to="/">Dashboard</Link>
+          <Link to="/all">All Tasks</Link>
+        </Breadcrumbs>
+        <div style={styles.headerContent}>
+          <div style={styles.headerIcon}>
+            <img src="/public/check-list.png" width={30} alt="icon all task" />
+          </div>
+          <div>
+            <h1 style={styles.headerTitle}>All Tasks</h1>
+            <p style={styles.headerSubtitle}>Manage and organize all your tasks here</p>
+          </div>
+        </div>
+      </motion.header>
 
-      <div className="bg-white rounded-xl p-4 shadow-md mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Search and Filter Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        style={styles.searchSection}
+      >
+        <div style={styles.searchGrid}>
           <TextField
             label="🔍 Search Task"
             fullWidth
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            variant="outlined"
           />
           <ControlSearch
             title="Filter Status"
@@ -140,45 +152,170 @@ export default function AllTask() {
             setData={(e) => setSortBy(e.target.value)}
           />
         </div>
-      </div>
+      </motion.div>
 
+      {/* Add Task Button */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        style={styles.addButtonContainer}
+      >
+        <Button
+          component={Link}
+          to="/add"
+          variant="contained"
+          startIcon={<Plus size={20} />}
+          sx={{
+            background: blueTheme.gradient,
+            borderRadius: '12px',
+            padding: '0.75rem 2rem',
+            fontSize: '1rem',
+            fontWeight: '600',
+            textTransform: 'none',
+            transition: 'all 0.2s',
+            '&:hover': {
+              background: blueTheme.gradientHover,
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.3)',
+            },
+          }}
+        >
+          Add New Task
+        </Button>
+      </motion.div>
+
+      {/* Tasks Grid */}
       {loading ? (
-        <Loading bolean={true} />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={styles.loadingContainer}
+        >
+          <Loading bolean={true} />
+        </motion.div>
       ) : dataTasks.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
-          <FileX className="mx-auto mb-4 w-12 h-12" />
-          <p className="text-lg font-semibold">There are no task yet</p>
-          <p className="text-sm">Please add the task first</p>
-          <Link
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={styles.emptyState}
+        >
+          <FileX size={60} style={{ margin: '0 auto 1rem', color: '#94a3b8', opacity: 0.5 }} />
+          <p
+            style={{
+              color: '#64748b',
+              fontSize: '1.25rem',
+              fontWeight: '600',
+              marginBottom: '0.5rem',
+            }}
+          >
+            There are no tasks yet
+          </p>
+          <p style={{ color: '#94a3b8', marginBottom: '2rem' }}>Please add the task first</p>
+          <Button
+            component={Link}
             to="/add"
-            className="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-500"
+            variant="contained"
+            startIcon={<Plus size={20} />}
+            sx={{
+              background: blueTheme.gradient,
+              borderRadius: '12px',
+              padding: '0.75rem 2rem',
+              '&:hover': {
+                background: blueTheme.gradientHover,
+                transform: 'translateY(-2px)',
+              },
+            }}
           >
             Add Task
-          </Link>
-        </div>
+          </Button>
+        </motion.div>
       ) : (
-        <CardView data={dataTasks} setData={setData} />
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={styles.tasksGrid}
+        >
+          {dataTasks.map((item, index) => (
+            <TaskCard
+              key={item.id}
+              item={item}
+              // variants={cardVariants}8
+              onUpdate={setData}
+              onDeleteClick={(task) => setDeleteDialog({ open: true, task })}
+            />
+          ))}
+        </motion.div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialog.open}
+        onClose={() => setDeleteDialog({ open: false, task: null })}
+        PaperProps={{
+          sx: {
+            borderRadius: '16px',
+            padding: '0.5rem',
+          },
+        }}
+      >
+        <DialogTitle sx={{ fontSize: '1.25rem', fontWeight: '600', color: '#1e293b' }}>
+          Confirm Delete
+        </DialogTitle>
+        <DialogContent>
+          <p style={{ color: '#64748b' }}>
+            Are you sure you want to delete "{deleteDialog.task?.title}"? This action cannot be
+            undone.
+          </p>
+        </DialogContent>
+        <DialogActions sx={{ padding: '1rem 1.5rem' }}>
+          <Button
+            onClick={() => setDeleteDialog({ open: false, task: null })}
+            sx={{
+              color: '#64748b',
+              transition: 'all 0.2s',
+              '&:hover': { backgroundColor: '#F1F5F9' },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            variant="contained"
+            color="error"
+            sx={{
+              borderRadius: '8px',
+              textTransform: 'none',
+              padding: '0.5rem 1.5rem',
+              fontWeight: '600',
+              transition: 'all 0.2s',
+              '&:hover': {
+                transform: 'translateY(-1px)',
+              },
+            }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </motion.section>
   );
 }
 
-function CardView({ data, setData }) {
-  const handleDelete = async (id) => {
-    await deleteTask(id);
-    setData((prev) => prev.filter((item) => item.id !== id));
-  };
+function TaskCard({ item, variants, onUpdate, onDeleteClick }) {
+  const priorityStyle = getPriorityStyle(item.priority);
 
   const handleFavorite = async (id, currentValue) => {
     await toggleFavorite(id, currentValue);
-    setData((prev) =>
+    onUpdate((prev) =>
       prev.map((item) => (item.id === id ? { ...item, favorite: !item.favorite } : item)),
     );
   };
 
   const handleToggleComplete = async (id, currentValue) => {
     // Optimistically update UI
-    setData((prev) =>
+    onUpdate((prev) =>
       prev.map((item) => (item.id === id ? { ...item, complete: !item.complete } : item)),
     );
 
@@ -186,117 +323,183 @@ function CardView({ data, setData }) {
       await toggleComplete(id, currentValue);
     } catch (err) {
       console.error('Gagal update ke Firestore', err);
-      // Optional: Revert kalau gagal
-      setData((prev) =>
+      // Revert kalau gagal
+      onUpdate((prev) =>
         prev.map((item) => (item.id === id ? { ...item, complete: currentValue } : item)),
       );
     }
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {data.map((item) => (
-        <motion.div
-          key={item.id}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          // transition={{ type: 'tween', duration: 0.3 }}
-          whileHover={{
-            scale: 1.02,
-            filter: 'drop-shadow(0 5px 10px rgba(0,0,0,0.1))',
-          }}
-          whileTap={{ scale: 0.98 }}
-          className="transition-all duration-300 ease-in-out"
-        >
-          <Card
-            className="rounded-2xl border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white via-blue-50 to-purple-50"
-            sx={{ padding: '16px' }}
+    <motion.div whileHover={{ scale: 1.05 }}>
+      <Card
+      // sx={getCardStyle(item.complete)}
+      >
+        <CardContent sx={{ padding: '1.5rem' }}>
+          {/* Header dengan title dan favorite */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              marginBottom: '1rem',
+            }}
           >
-            <CardContent className="space-y-2">
-              <Typography variant="h6" className="font-bold text-slate-800 text-lg">
-                {item.title}
-              </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: '700',
+                color: item.complete ? '#94a3b8' : '#1e293b',
+                textDecoration: item.complete ? 'line-through' : 'none',
+                flex: 1,
+                marginRight: '1rem',
+              }}
+            >
+              {item.title}
+            </Typography>
+            <IconButton
+              size="small"
+              onClick={() => handleFavorite(item.id, item.favorite)}
+              sx={{
+                color: item.favorite ? '#F59E0B' : '#94a3b8',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  color: '#F59E0B',
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
+              <Star size={20} fill={item.favorite ? 'currentColor' : 'none'} />
+            </IconButton>
+          </div>
 
-              <Typography className="text-sm text-slate-600">{item.content}</Typography>
+          {/* Content */}
+          <Typography
+            variant="body2"
+            sx={{
+              color: item.complete ? '#94a3b8' : '#64748b',
+              marginBottom: '1rem',
+              lineHeight: 1.5,
+            }}
+          >
+            {item.content}
+          </Typography>
 
-              <Typography className="text-xs text-gray-500">
-                <span className="mr-2 inline-block bg-indigo-500 text-white px-2 py-1 rounded-full text-xs">
-                  {item.category}
-                </span>
-                <span
-                  className={`inline-block text-xs font-medium px-2 py-1 rounded-full ${
-                    item.complete ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                  }`}
-                >
-                  {item.complete ? 'Complete' : 'Active'}
-                </span>
-              </Typography>
+          {/* Tags */}
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+            <span
+              style={{
+                backgroundColor: blueTheme.primaryLight,
+                color: blueTheme.primaryDark,
+                padding: '0.25rem 0.75rem',
+                borderRadius: '20px',
+                fontSize: '0.75rem',
+                fontWeight: '600',
+              }}
+            >
+              {item.category}
+            </span>
+            <span
+              style={{
+                backgroundColor: priorityStyle.bgLight,
+                color: priorityStyle.color,
+                padding: '0.25rem 0.75rem',
+                borderRadius: '20px',
+                fontSize: '0.75rem',
+                fontWeight: '600',
+                border: `1px solid ${priorityStyle.border}20`,
+              }}
+            >
+              {item.priority}
+            </span>
+            <span
+              style={{
+                backgroundColor: item.complete ? '#D1FAE5' : '#FEF3C7',
+                color: item.complete ? '#065F46' : '#92400E',
+                padding: '0.25rem 0.75rem',
+                borderRadius: '20px',
+                fontSize: '0.75rem',
+                fontWeight: '600',
+              }}
+            >
+              {item.complete ? 'Complete' : 'Active'}
+            </span>
+          </div>
 
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-xs text-gray-400 italic">
-                  {new Date(item.date).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </span>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full font-semibold ${getPriorityStyle(
-                    item.priority,
-                  )}`}
-                >
-                  {item.priority}
-                </span>
-              </div>
-            </CardContent>
+          {/* Date */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94a3b8' }}>
+            <Clock size={14} />
+            <Typography variant="caption" sx={{ color: '#94a3b8' }}>
+              {new Date(item.date).toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </Typography>
+          </div>
+        </CardContent>
 
-            <CardActions className="flex justify-end gap-2 pt-2">
-              <Button
-                color="warning"
-                onClick={() => handleFavorite(item.id, item.favorite)}
-                className="hover:bg-yellow-100 rounded-full"
-              >
-                <Star
-                  size={18}
-                  fill={item.favorite ? '#facc15' : 'none'}
-                  color={item.favorite ? '#facc15' : '#9ca3af'}
-                />
-              </Button>
+        {/* Actions */}
+        <CardActions
+          sx={{
+            padding: '0 1.5rem 1.5rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ display: 'flex', gap: '0.25rem' }}>
+            <IconButton
+              size="small"
+              component={Link}
+              to={`/edit/${item.id}`}
+              sx={{
+                color: '#64748b',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  color: blueTheme.primary,
+                  backgroundColor: blueTheme.primaryLight,
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
+              <Edit size={18} />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => onDeleteClick(item)}
+              sx={{
+                color: '#64748b',
+                transition: 'all 0.2s',
+                '&:hover': {
+                  color: '#EF4444',
+                  backgroundColor: '#FEE2E2',
+                  transform: 'scale(1.1)',
+                },
+              }}
+            >
+              <Trash2 size={18} />
+            </IconButton>
+          </div>
 
-              <Button
-                color="success"
-                component={Link}
-                to={`/edit/${item.id}`}
-                className="bg-yellow-100 hover:bg-yellow-200 text-yellow-600 rounded-full"
-              >
-                <Edit size={18} />
-              </Button>
-
-              <Button
-                color="error"
-                onClick={() => handleDelete(item.id)}
-                className="bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
-              >
-                <Trash2 size={18} />
-              </Button>
-
-              <Button
-                color="success"
-                onClick={() => handleToggleComplete(item.id, item.complete)}
-                className={`${
-                  item.complete
-                    ? 'bg-green-100 text-green-600 hover:bg-green-200'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                } rounded-full`}
-              >
-                {item.complete ? <CheckCircle size={18} /> : <Circle size={18} />}
-              </Button>
-            </CardActions>
-          </Card>
-        </motion.div>
-      ))}
-    </div>
+          <IconButton
+            size="small"
+            onClick={() => handleToggleComplete(item.id, item.complete)}
+            sx={{
+              color: item.complete ? '#10B981' : '#94a3b8',
+              transition: 'all 0.2s',
+              '&:hover': {
+                color: item.complete ? '#059669' : blueTheme.primary,
+                backgroundColor: item.complete ? '#D1FAE5' : blueTheme.primaryLight,
+                transform: 'scale(1.1)',
+              },
+            }}
+          >
+            {item.complete ? <CheckCircle size={20} /> : <Circle size={20} />}
+          </IconButton>
+        </CardActions>
+      </Card>
+    </motion.div>
   );
 }
 
@@ -304,7 +507,15 @@ function ControlSearch({ title, ArrayData, setData, data, className = '' }) {
   return (
     <FormControl fullWidth className={className}>
       <InputLabel id={`${title}-label`}>{title}</InputLabel>
-      <Select labelId={`${title}-label`} value={data} label={title} onChange={setData}>
+      <Select
+        labelId={`${title}-label`}
+        value={data}
+        label={title}
+        onChange={setData}
+        sx={{
+          borderRadius: '8px',
+        }}
+      >
         {ArrayData.map((item) => (
           <MenuItem key={item} value={item}>
             {item}

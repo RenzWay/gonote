@@ -40,31 +40,31 @@
     },
     {
       "src": "./ss/dashboard.png",
-      "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
       "src": "./ss/addpage.png",
-      "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
       "src": "./ss/allpage.png",
-      "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
+      "src": "./ss/scheduler.png",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
       "src": "./ss/loading.jpg",
-      "sizes": "750x1334",
       "type": "image/jpeg",
       "form_factor": "narrow"
     },
     {
       "src": "./ss/panjang.jpg",
-      "sizes": "750x1334",
       "type": "image/jpeg",
       "form_factor": "narrow"
     }
