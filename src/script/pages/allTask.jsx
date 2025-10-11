@@ -24,6 +24,33 @@ import Loading from '../lib/loading';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { motion } from 'framer-motion';
 
+// Helper function untuk convert HTML ke plain text (untuk search)
+function stripHtmlTags(html) {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
+}
+
+// Helper function untuk truncate HTML
+function truncateHTML(html, maxLength = 200) {
+  const text = stripHtmlTags(html);
+  if (text.length <= maxLength) return html;
+
+  // Potong HTML sampai mendekati max length
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  // Ambil text content dan potong
+  const truncatedText = text.substring(0, maxLength);
+
+  // Cari posisi terakhir di HTML yang mendekati panjang truncated text
+  let tempDiv = document.createElement('div');
+  let currentLength = 0;
+  let result = '';
+
+  // Simple truncation - ambil substring dari HTML
+  return html.substring(0, Math.min(html.length, maxLength * 2)) + '...';
+}
+
 export default function AllTask() {
   const [searchQuery, setSearchQuery] = useState('');
   const [allStatus, setAllStatus] = useState('');
@@ -41,9 +68,10 @@ export default function AllTask() {
     .filter((item) => {
       if (!searchQuery.trim()) return true;
       const q = searchQuery.toLowerCase();
+      const plainContent = stripHtmlTags(item.content);
       return (
         item.title.toLowerCase().includes(q) ||
-        item.content.toLowerCase().includes(q) ||
+        plainContent.toLowerCase().includes(q) ||
         item.category.toLowerCase().includes(q)
       );
     });
@@ -93,6 +121,63 @@ export default function AllTask() {
       exit={{ opacity: 0 }}
       style={styles.container}
     >
+      {/* CSS Global untuk styling HTML content */}
+      <style>{`
+        .task-content-preview h1,
+        .task-content-preview h2,
+        .task-content-preview h3,
+        .task-content-preview h4,
+        .task-content-preview h5,
+        .task-content-preview h6 {
+          font-weight: 700;
+          margin: 0.3em 0;
+          line-height: 1.3;
+        }
+        .task-content-preview h1 { font-size: 1.25em; }
+        .task-content-preview h2 { font-size: 1.15em; }
+        .task-content-preview h3 { font-size: 1.05em; }
+        .task-content-preview h4,
+        .task-content-preview h5,
+        .task-content-preview h6 { font-size: 1em; }
+        
+        .task-content-preview p {
+          margin: 0.3em 0;
+          line-height: 1.6;
+        }
+        .task-content-preview strong { font-weight: 700; }
+        .task-content-preview em { font-style: italic; }
+        .task-content-preview u { text-decoration: underline; }
+        
+        .task-content-preview ul,
+        .task-content-preview ol {
+          padding-left: 1.5em;
+          margin: 0.3em 0;
+        }
+        .task-content-preview li {
+          margin: 0.2em 0;
+        }
+        
+        .task-content-preview blockquote {
+          border-left: 3px solid #cbd5e1;
+          padding-left: 1em;
+          margin: 0.5em 0;
+          font-style: italic;
+          color: #64748b;
+        }
+        
+        .task-content-preview a {
+          color: #3b82f6;
+          text-decoration: underline;
+        }
+        
+        .task-content-preview img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          margin: 0.5em 0;
+        }
+      `}</style>
+
       {/* Header dengan gradient yang sama seperti Schedule */}
       <motion.header
         initial={{ y: -20, opacity: 0 }}
@@ -241,7 +326,6 @@ export default function AllTask() {
             <TaskCard
               key={item.id}
               item={item}
-              // variants={cardVariants}8
               onUpdate={setData}
               onDeleteClick={(task) => setDeleteDialog({ open: true, task })}
             />
@@ -314,7 +398,6 @@ function TaskCard({ item, variants, onUpdate, onDeleteClick }) {
   };
 
   const handleToggleComplete = async (id, currentValue) => {
-    // Optimistically update UI
     onUpdate((prev) =>
       prev.map((item) => (item.id === id ? { ...item, complete: !item.complete } : item)),
     );
@@ -323,7 +406,6 @@ function TaskCard({ item, variants, onUpdate, onDeleteClick }) {
       await toggleComplete(id, currentValue);
     } catch (err) {
       console.error('Gagal update ke Firestore', err);
-      // Revert kalau gagal
       onUpdate((prev) =>
         prev.map((item) => (item.id === id ? { ...item, complete: currentValue } : item)),
       );
@@ -332,9 +414,7 @@ function TaskCard({ item, variants, onUpdate, onDeleteClick }) {
 
   return (
     <motion.div whileHover={{ scale: 1.05 }}>
-      <Card
-      // sx={getCardStyle(item.complete)}
-      >
+      <Card>
         <CardContent sx={{ padding: '1.5rem' }}>
           {/* Header dengan title dan favorite */}
           <div
@@ -373,17 +453,19 @@ function TaskCard({ item, variants, onUpdate, onDeleteClick }) {
             </IconButton>
           </div>
 
-          {/* Content */}
-          <Typography
-            variant="body2"
-            sx={{
+          {/* Content - Render HTML dengan styling yang proper */}
+          <div
+            className="task-content-preview"
+            style={{
               color: item.complete ? '#94a3b8' : '#64748b',
               marginBottom: '1rem',
-              lineHeight: 1.5,
+              fontSize: '0.875rem',
+              maxHeight: '100px',
+              overflow: 'hidden',
+              position: 'relative',
             }}
-          >
-            {item.content}
-          </Typography>
+            dangerouslySetInnerHTML={{ __html: truncateHTML(item.content, 200) }}
+          />
 
           {/* Tags */}
           <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>

@@ -1,21 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  CalendarFoldIcon,
-  LayoutDashboard,
-  Menu,
-  PlusCircle,
-  SquareMenu,
-  TestTubesIcon,
-  X,
-} from 'lucide-react';
+import { CalendarFoldIcon, LayoutDashboard, Menu, PlusCircle, SquareMenu, X } from 'lucide-react';
 
 const links = [
   { to: '/', name: 'Dashboard', icon: LayoutDashboard },
   { to: '/add', name: 'Add Task', icon: PlusCircle },
   { to: '/all', name: 'All Tasks', icon: SquareMenu },
   { to: '/schedule', name: 'Schedule', icon: CalendarFoldIcon },
-  { to: '/test', name: 'Test', icon: TestTubesIcon },
 ];
 
 export default function Sidebar({ open, setOpen }) {
@@ -64,7 +55,7 @@ export default function Sidebar({ open, setOpen }) {
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 border border-gray-200"
+            className="w-8 h-8 flex items-center justify-center "
           >
             <X size={18} className="text-gray-600" />
           </button>
@@ -128,7 +119,7 @@ export default function Sidebar({ open, setOpen }) {
         {/* Footer Sidebar */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-gray-50">
           <div className="text-center">
-            <p className="text-sm text-gray-500 mb-1">GoNote v1.0</p>
+            <p className="text-sm text-gray-500 mb-1">GoNote v5.10.0</p>
             <p className="text-xs text-gray-400">Your Modern Note Taking App</p>
           </div>
         </div>

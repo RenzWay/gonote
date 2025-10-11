@@ -21,6 +21,7 @@ import {
   getDaySchedule,
   updateDaySchedule,
 } from '../model/model';
+import CkEditorWrapper from '../lib/textEditor';
 
 const nameDay = [
   { day: 'Senin', color: '#3B82F6', bgLight: '#EFF6FF' },
@@ -121,6 +122,13 @@ export default function SchedulerPage() {
     } catch (e) {
       console.error('Error deleting:', e);
     }
+  };
+
+  // Helper function to strip HTML tags for display
+  const stripHtml = (html) => {
+    const tmp = document.createElement('DIV');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
   };
 
   // Animation variants
@@ -352,15 +360,14 @@ export default function SchedulerPage() {
                                 {s.subject}
                               </p>
                               {s.description && (
-                                <p
+                                <div
                                   style={{
                                     fontSize: '0.813rem',
                                     color: '#64748b',
                                     lineHeight: '1.4',
                                   }}
-                                >
-                                  {s.description}
-                                </p>
+                                  dangerouslySetInnerHTML={{ __html: s.description }}
+                                />
                               )}
                             </div>
                             <div style={{ display: 'flex', gap: '0.25rem', flexShrink: 0 }}>
@@ -407,11 +414,11 @@ export default function SchedulerPage() {
         </motion.div>
       )}
 
-      {/* Dialog add/edit dengan Time Range Picker */}
+      {/* Dialog add/edit dengan CKEditor */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
-        maxWidth="sm"
+        maxWidth="md"
         fullWidth
         PaperProps={{
           sx: {
@@ -447,7 +454,7 @@ export default function SchedulerPage() {
                   shrink: true,
                 }}
                 inputProps={{
-                  step: 300, // 5 min intervals
+                  step: 300,
                 }}
               />
               <span style={{ color: '#64748b', fontWeight: '600' }}>—</span>
@@ -478,16 +485,24 @@ export default function SchedulerPage() {
               variant="outlined"
             />
 
-            {/* Description Field */}
-            <TextField
-              label="Deskripsi (opsional)"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              fullWidth
-              multiline
-              rows={3}
-              variant="outlined"
-            />
+            {/* CKEditor for Description */}
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  marginBottom: '0.5rem',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  color: '#64748b',
+                }}
+              >
+                Deskripsi (opsional)
+              </label>
+              <CkEditorWrapper
+                value={formData.description}
+                onChange={(data) => setFormData({ ...formData, description: data })}
+              />
+            </div>
           </div>
         </DialogContent>
         <DialogActions sx={{ padding: '1rem 1.5rem' }}>

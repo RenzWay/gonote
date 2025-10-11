@@ -20,6 +20,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Link, useNavigate } from 'react-router-dom';
 import { Plus, Save, X } from 'lucide-react';
 
+import CkEditorWrapper from "../lib/textEditor";
+
 const priorityItem = ['Low', 'Medium', 'High', 'Urgent'];
 const categoryItem = ['Personal', 'Work', 'School', 'Task', 'Other'];
 
@@ -73,6 +75,10 @@ export default function AddTaskPage() {
       });
     }
   };
+
+    const handleEditorChange = (newContent) => {
+        setContent(newContent);
+    };
 
   return (
     <motion.section
@@ -177,21 +183,36 @@ export default function AddTaskPage() {
               />
 
               {/* Content */}
-              <TextField
-                label="Description"
-                placeholder="Add task description"
-                variant="outlined"
-                fullWidth
-                multiline
-                rows={4}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '12px',
-                  },
-                }}
-              />
+                <div>
+                    <label style={{
+                        display: 'block',
+                        marginBottom: '0.5rem',
+                        color: '#64748B',
+                        fontSize: '0.875rem',
+                        fontWeight: '500'
+                    }}>
+                        Description
+                    </label>
+                    <CkEditorWrapper
+                        value={content}
+                        onChange={handleEditorChange}
+                    />
+                </div>
+              {/*<TextField*/}
+              {/*  label="Description"*/}
+              {/*  placeholder="Add task description"*/}
+              {/*  variant="outlined"*/}
+              {/*  fullWidth*/}
+              {/*  multiline*/}
+              {/*  rows={4}*/}
+              {/*  value={content}*/}
+              {/*  onChange={(e) => setContent(e.target.value)}*/}
+              {/*  sx={{*/}
+              {/*    '& .MuiOutlinedInput-root': {*/}
+              {/*      borderRadius: '12px',*/}
+              {/*    },*/}
+              {/*  }}*/}
+              {/*/>*/}
 
               {/* Priority & Date */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
